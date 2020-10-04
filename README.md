@@ -1,8 +1,33 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Running Locally
+
+Follow these instructions in order to run the app locally
+
+1. After cloning the smartbook-client repository, navigate to the root directory
+2. Run `npm install` to download any required dependencies
+   * Make sure to install Node and npm as it is the package manger we are using: https://nodejs.org/en/
+3. Run `npm start` to startup and node server that runs the app locally
+4. Any changes made to the code while the node server is live will sync automatically and display in the browser
+
+## Building and Deploying
+
+Follow these instructions in order to build and deploy the app
+
+1. Run `npm run build` in the root directory of smartbook-client, which will create a 'build' folder
+2. Once the build succeeds, navigate to https://console.cloud.google.com/storage/browser?project=smartbook-lms
+3. Select 'smartbook-client-build' and click 'Upload Folder' and select the newly created 'build' folder
+4. Once uploaded, from this page, open the Cloud Shell by click on the Cloud Shell icon in the top app bar
+5. Run `gsutil rsync -r gs://smartbook-client-build ./smartbook-client` in the Cloud Shell 
+6. Once the command has finished, run `cd smartbook-client/` and then `gcloud app deploy`
+   * If prompted select 'Y' when asked to continue
+7. After deployment, the site should be live at https://smartbook-lms.uc.r.appspot.com
+   * Run `gcloud app browse` if the above link does not work to get the updated URL
+
+
 ## Available Scripts
 
-In the project directory, you can run:
+Below are more detailed explanation on npm commands
 
 ### `npm install react-scripts --save`
 
@@ -39,32 +64,3 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
