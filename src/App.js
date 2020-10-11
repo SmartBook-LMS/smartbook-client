@@ -16,9 +16,9 @@ import NavBar from "./NavBar";
 import MyBook from './MyBook';
 import Account from './Account';
 import SignUp from './SignUp';
+import SignIn from './SignIn';
 //import Home from "./components/";
 import Home from "./Home";
-import './App.css';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,6 +42,7 @@ function App() {
       <Route path="/MyBook" component={MyBook} />
       <Route path="/Account" component={Account} />
       <Route path="/SignUp" component={SignUp} />
+      <Route path="/SignIn" component={SignIn} />
     </CssBaseline>
   
    

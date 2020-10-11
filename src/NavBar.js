@@ -15,18 +15,19 @@ function NavBar() {
         setOpen(true);
     }
 
+ 
+
     const drawerItems = [
         {
             listIcon: <AccountCircleRoundedIcon style={{color: 'white', fontSize: 50, paddingRight: 10}}/>,
             listText: <h2 style={{color: 'white'}}>Sign In</h2>,
-            listPath: "/SignIn"
+            listPath: '/SignIn'
         }
     ]
 
     return (
 
         <Box component="nav">
-            
         <AppBar position="static" style={{ background: "#2196f3", margin: 20 }}>
             <Toolbar style={{justifyContent: 'space-between', paddingLeft: 300}}>
                 
@@ -38,17 +39,17 @@ function NavBar() {
                 <Drawer anchor='right' open={open} onClose={() => setOpen(false)}>     
                     <List style={{backgroundColor: 'pink'}}>
                         {drawerItems.map((lsItem, key) => (
-                        <ListItem button key={key} component={Link} to={lsItem.listPath}>
+                        <Link to="/SignIn" style={{ textDecoration: 'none' }}>
+                        <ListItem button key={key} >
                             <ListItemIcon>{lsItem.listIcon}</ListItemIcon>
                             <ListItemText style={{color: 'white',textSizeAdjust: 'auto'}} primary={lsItem.listText} ></ListItemText>
                         </ListItem>
+                        </Link>
                         ))}
                     </List>
                     <div  style={theme.drawerContainer}>
                         <h5 style={theme.question}>Don't have Account?</h5>
-                        <Link to="/SignUp" style={{ textDecoration: 'none' }}><Button variant="h6" style={theme.signupText} onClick={SignUp}>Sign Up!</Button></Link>
-
-                                
+                        <Link to="/SignUp" style={{ textDecoration: 'none' }}><Button variant="h6" style={theme.signupText} onClick={SignUp}>Sign Up!</Button></Link> 
                     </div>    
                 </Drawer>
             </Toolbar>

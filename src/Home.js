@@ -11,6 +11,7 @@ import theme from './theme';
 import Modal from 'react-modal';
 import SignUp from './SignUp';
 import NavBar from './NavBar';
+import Header from './Header';
 
 
 
@@ -43,6 +44,7 @@ function Home() {
     return (
         <div>
             <NavBar />
+            <Header />
 
         </div>  
     );
