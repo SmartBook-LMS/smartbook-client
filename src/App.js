@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
-import React from "react";
+import React, { useEffect } from "react";
 import theme from "./theme";
 
 const useStyles = makeStyles((theme) => ({
@@ -23,8 +23,48 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const makeCall = async () => {
+  let token = localStorage.getItem("token");
+
+  if (token == null) {
+    const user = {
+      username: "dkambich",
+      password: "1234",
+    };
+
+    const tokenHeader = {
+      "Content-Type": "application/json",
+    };
+
+    const tokenResponse = await fetch("http://127.0.0.1:8000/api-token-auth/", {
+      method: "POST",
+      body: JSON.stringify(user),
+      headers: tokenHeader,
+    });
+    const tokenResponseJson = await tokenResponse.json();
+    token = tokenResponseJson.token;
+    localStorage.setItem("token", tokenResponseJson.token);
+  } else {
+    console.log("Cached token is " + token);
+  }
+
+  const dataHeader = {
+    Authorization: `Token ${token}`,
+  };
+  const dataResponse = await fetch("http://127.0.0.1:8000/hello/", {
+    headers: dataHeader,
+  });
+  const dataResponseJson = await dataResponse.json();
+  console.log(dataResponseJson);
+};
+
 function App() {
   const classes = useStyles();
+
+  useEffect(() => {
+    makeCall();
+  }, []);
+
   return (
     <ThemeProvider theme={theme}>
       <AppBar position="static">
@@ -38,7 +78,7 @@ function App() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
-            SmartBook LMS 
+            SmartBook LMS
           </Typography>
           <Button color="inherit">Login</Button>
         </Toolbar>
