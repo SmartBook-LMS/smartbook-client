@@ -1,6 +1,7 @@
 import {
   AppBar,
   Button,
+  CssBaseline,
   IconButton,
   makeStyles,
   ThemeProvider,
@@ -12,13 +13,11 @@ import React from "react";
 import theme from "./theme";
 import { BrowserRouter as Router, Route, Link, NavLink, Switch } from "react-router-dom";
 import NavBar from "./NavBar";
-import SignIn from "./SignIn";
 import MyBook from './MyBook';
 import Account from './Account';
 //import Home from "./components/";
 import Home from "./Home";
 import './App.css';
-
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,10 +31,27 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
 function App() {
   const classes = useStyles();
   return (
-    <>
+    /*<>
+      <CssBaseline />
+        <Route exact path="/" component={Home} />
+        <Route path="/MyBook" component={MyBook} />
+        <Route path="/Account" component={Account} />
+    </>*/
+    <Router>
+      <Home>
+        <Switch>
+          <Route path="/" component={Home} exact />
+          <Route path="/MyBook" component={MyBook} />
+          <Route path="/Account" component={Account} />
+        </Switch>
+      </Home>
+    </Router>
+
+    /*<>
       <Router>
         <Home>
           <Switch>
@@ -43,7 +59,7 @@ function App() {
           </Switch>
         </Home>
       </Router>
-    </>
+    </>*/
 
     /*<ThemeProvider theme={theme}>
       <AppBar position="static">
@@ -74,5 +90,21 @@ function App() {
   </ThemeProvider>*/
   );
 }
+
+/*function AppRoutes() {
+  return (
+    <Switch>
+      <Route path="/">
+        <Home />
+      </Route>
+      <Route path="./MyBook">
+        <MyBook />
+      </Route>
+      <Route path="./Account">
+        <Account />
+      </Route>
+    </Switch>
+  );
+}*/
 
 export default App;
