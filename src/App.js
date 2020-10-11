@@ -15,6 +15,7 @@ import { BrowserRouter as Router, Route, Link, NavLink, Switch } from "react-rou
 import NavBar from "./NavBar";
 import MyBook from './MyBook';
 import Account from './Account';
+import SignUp from './SignUp';
 //import Home from "./components/";
 import Home from "./Home";
 import './App.css';
@@ -35,59 +36,15 @@ const useStyles = makeStyles((theme) => ({
 function App() {
   const classes = useStyles();
   return (
-    /*<>
-      <CssBaseline />
-        <Route exact path="/" component={Home} />
-        <Route path="/MyBook" component={MyBook} />
-        <Route path="/Account" component={Account} />
-    </>*/
-    <Router>
-      <Home>
-        <Switch>
-          <Route path="/" component={Home} exact />
-          <Route path="/MyBook" component={MyBook} />
-          <Route path="/Account" component={Account} />
-        </Switch>
-      </Home>
-    </Router>
 
-    /*<>
-      <Router>
-        <Home>
-          <Switch>
-            <Route parth='/' />
-          </Switch>
-        </Home>
-      </Router>
-    </>*/
-
-    /*<ThemeProvider theme={theme}>
-      <AppBar position="static">
-        <Toolbar>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="menu"
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" className={classes.title}>
-            SmartBook LMS 
-          </Typography>
-          <Button color="inherit" >Login</Button>
-        </Toolbar>
-      </AppBar>
-      <Router>
-        <div>
-          <Route exact path="/" component={Home} />
-          <Route exact path="/MyBook" component={MyBook} />
-          <Route exact path="/Account" component={Account} />
-          <Route exact path="/SignIn" component={SignIn} />
-
-        </div>
-      </Router>
-  </ThemeProvider>*/
+    <CssBaseline>
+      <Route exact path="/" component={Home} />
+      <Route path="/MyBook" component={MyBook} />
+      <Route path="/Account" component={Account} />
+      <Route path="/SignUp" component={SignUp} />
+    </CssBaseline>
+  
+   
   );
 }
 

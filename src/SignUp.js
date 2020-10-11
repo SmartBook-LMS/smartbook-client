@@ -8,6 +8,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import CloseIcon from '@material-ui/icons/Close';
 import AccountCircleRoundedIcon from '@material-ui/icons/AccountCircleRounded';
 import theme from './theme';
+import NavBar from './NavBar';
 
 function SignUp() {
 
@@ -25,8 +26,9 @@ function SignUp() {
 
     return (
         <div>
-            SignUP
-        </div>
+            <NavBar />
+            <h3>Sign Up!</h3>
+        </div>  
         
     );
 }
