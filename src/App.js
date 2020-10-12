@@ -36,11 +36,14 @@ const makeCall = async () => {
       "Content-Type": "application/json",
     };
 
-    const tokenResponse = await fetch("http://127.0.0.1:8000/api-token-auth/", {
-      method: "POST",
-      body: JSON.stringify(user),
-      headers: tokenHeader,
-    });
+    const tokenResponse = await fetch(
+      "https://backend-dot-smartbook-lms.uc.r.appspot.com/login-user/",
+      {
+        method: "POST",
+        body: JSON.stringify(user),
+        headers: tokenHeader,
+      }
+    );
     const tokenResponseJson = await tokenResponse.json();
     token = tokenResponseJson.token;
     localStorage.setItem("token", tokenResponseJson.token);
@@ -51,7 +54,7 @@ const makeCall = async () => {
   const dataHeader = {
     Authorization: `Token ${token}`,
   };
-  const dataResponse = await fetch("http://127.0.0.1:8000/hello/", {
+  const dataResponse = await fetch("https://backend-dot-smartbook-lms.uc.r.appspot.com/hello/", {
     headers: dataHeader,
   });
   const dataResponseJson = await dataResponse.json();
