@@ -10,6 +10,7 @@ import {
 import MenuIcon from "@material-ui/icons/Menu";
 import React, { useEffect } from "react";
 import theme from "./theme";
+import { baseURL } from "./constants";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,14 +37,11 @@ const makeCall = async () => {
       "Content-Type": "application/json",
     };
 
-    const tokenResponse = await fetch(
-      "https://backend-dot-smartbook-lms.uc.r.appspot.com/login-user/",
-      {
-        method: "POST",
-        body: JSON.stringify(user),
-        headers: tokenHeader,
-      }
-    );
+    const tokenResponse = await fetch(`${baseURL}/login-user/`, {
+      method: "POST",
+      body: JSON.stringify(user),
+      headers: tokenHeader,
+    });
     const tokenResponseJson = await tokenResponse.json();
     token = tokenResponseJson.token;
     localStorage.setItem("token", tokenResponseJson.token);
@@ -54,7 +52,7 @@ const makeCall = async () => {
   const dataHeader = {
     Authorization: `Token ${token}`,
   };
-  const dataResponse = await fetch("https://backend-dot-smartbook-lms.uc.r.appspot.com/hello/", {
+  const dataResponse = await fetch(`${baseURL}/hello/`, {
     headers: dataHeader,
   });
   const dataResponseJson = await dataResponse.json();
