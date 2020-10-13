@@ -52,7 +52,7 @@ const makeCall = async () => {
   const dataHeader = {
     Authorization: `Token ${token}`,
   };
-  const dataResponse = await fetch(`${baseURL}/hello/`, {
+  const dataResponse = await fetch(`${baseURL}/sample-sql/`, {
     headers: dataHeader,
   });
   const dataResponseJson = await dataResponse.json();
