@@ -54,6 +54,10 @@ const theme = createMuiTheme({
     position: 'absolute', 
     fontWeight: 90, 
     fontSize: 25
+  },
+  searchContainer: {
+    backgroundColor: 'pink',
+    padding: 100    
   }
 });
 
