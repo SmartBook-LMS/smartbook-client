@@ -27,7 +27,7 @@ function SignIn() {
       <Avatar style={useStyles.avatar}>
           <LockOutlinedIcon />
         </Avatar>
-        <Typography component="h1" variant="h5">Sign in</Typography>
+        <Typography component="h1" variant="h5" srtle={{marginTop: 10, marginBottom: 30}}>Sign in</Typography>
         <form srtle={useStyles.form} noValidate>
           <TextField
             variant="outlined"

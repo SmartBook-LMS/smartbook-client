@@ -4,6 +4,10 @@ import { AppBar, Toolbar, Box, Typography, Button, IconButton, Drawer, List, Lis
 import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircleRoundedIcon from '@material-ui/icons/AccountCircleRounded';
 import theme from './theme';
+//import Modal from 'react-modal';
+import { Modal } from 'react-responsive-modal';
+
+
 
 import SignUp from './SignUp';
 import SignIn from './SignIn';
@@ -15,6 +19,9 @@ function NavBar() {
         setOpen(true);
     }
 
+    //const [openModal, setOpenModal] = useState(false);
+
+ 
  
 
     const drawerItems = [
@@ -24,6 +31,9 @@ function NavBar() {
             listPath: '/SignIn'
         }
     ]
+
+   
+  
 
     return (
 
@@ -35,6 +45,9 @@ function NavBar() {
                 <Link to="/" style={{ textDecoration: 'none' }}><Button variant="h6" style={{ color: "white" }}><p>Home</p></Button></Link>
                 <Link to="/MyBook" style={{ textDecoration: 'none' }}><Button type="button"style={{ color: "white", }}>My Book</Button></Link>
                 <Link to="/Account" style={{ textDecoration: 'none' }}><Button variant="h6" style={{ color: "white", }}>Account</Button></Link>
+                
+
+
                 <IconButton style={{justifyContent: 'end'}}> <MenuIcon onClick={handleDrawer} /></IconButton>
                 <Drawer anchor='right' open={open} onClose={() => setOpen(false)}>     
                     <List style={{backgroundColor: 'pink'}}>
@@ -49,10 +62,14 @@ function NavBar() {
                     </List>
                     <div  style={theme.drawerContainer}>
                         <h5 style={theme.question}>Don't have Account?</h5>
+                        {/*<Button variant="primary" style={theme.signupText} onClick={onOpenModal}>Sign Up!</Button> */}
                         <Link to="/SignUp" style={{ textDecoration: 'none' }}><Button variant="h6" style={theme.signupText} onClick={SignUp}>Sign Up!</Button></Link> 
+
+           
+                        
                     </div>    
-                </Drawer>
-            </Toolbar>
+                </Drawer>       
+            </Toolbar> 
         </AppBar>
         </Box>
     );

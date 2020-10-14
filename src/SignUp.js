@@ -14,18 +14,25 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import NavBar from './NavBar';
 import useStyles from './theme';
+import { useTheme, createMuiTheme } from "@material-ui/core";
 
  
 
 function SignUp() {
+
+
+
   return (
+    <Box>
+    <div><Typography component='header' variant="h6" style={{marginLeft:50, marginTop:50}}>Welcome!</Typography></div>
+    <div><Typography component='header' variant="h6" style={{marginLeft:50}}>Create your account</Typography></div>
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div style={useStyles.paper}>
         <Avatar style={useStyles.avatar}>
           <LockOutlinedIcon />
         </Avatar>
-        <Typography component="h1" variant="h5">
+        <Typography component="h1" variant="h5" style={{marginTop: 10, marginBottom: 30}}>
           Sign up
         </Typography>
         <form srtle={useStyles.form} noValidate>
@@ -97,6 +104,7 @@ function SignUp() {
       <Box mt={5}>
       </Box>
     </Container>
+    </Box>
         
     );
 }

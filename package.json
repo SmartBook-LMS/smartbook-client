@@ -16,6 +16,7 @@
     "react-dom": "^16.13.1",
     "react-modal": "^3.11.2",
     "react-navigation": "^4.4.2",
+    "react-responsive-modal": "^5.1.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.3",
     "react-typed": "^1.2.0"
