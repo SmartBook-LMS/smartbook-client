@@ -18,10 +18,10 @@ function SignIn() {
             margin="normal"
             required
             fullWidth
-            id="email"
+            id="username"
             label="Username"
-            name="email"
-            autoComplete="email"
+            name="username"
+            autoComplete="name"
             autoFocus
           />
           <TextField
