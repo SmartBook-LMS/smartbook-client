@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { ThemeProvider } from "@material-ui/core";
 import theme from "./theme";
-import { baseURL } from "./constants";
+import { baseURL, useConstructor } from "./constants";
 import {
   BrowserRouter as Router,
   Route,
@@ -15,6 +15,7 @@ import SignUp from "./SignUp";
 import SignIn from "./SignIn";
 import Search from "./Search";
 import Home from "./Home";
+import GuardedRoute from "./components/GuardedRoute";
 
 const makeCall = async () => {
   let token = localStorage.getItem("token");
@@ -52,20 +53,41 @@ const makeCall = async () => {
 };
 
 function App() {
-  
-  useEffect(() => {
-    makeCall();
-  }, []);
+  const [authenticated, setAuthenticated] = useState(false);
+  useConstructor(() => {
+    const token = localStorage.getItem("token");
+    if (token) setAuthenticated(true);
+  });
 
   return (
     <ThemeProvider theme={theme}>
       <Router>
-        <Route exact path="/" component={Home} />
-        <Route path="/MyBook" component={MyBook} />
-        <Route path="/Account" component={Account} />
-        <Route path="/SignUp" component={SignUp} />
-        <Route path="/SignIn" component={SignIn} />
-        <Route path="/Search" component={Search} />
+        <Switch>
+          <GuardedRoute exact path="/" component={Home} auth={authenticated} />
+          <GuardedRoute
+            path="/MyBook"
+            component={MyBook}
+            auth={authenticated}
+          />
+          <GuardedRoute
+            path="/Account"
+            component={Account}
+            auth={authenticated}
+          />
+          <GuardedRoute
+            path="/SignUp"
+            component={SignUp}
+            auth={!authenticated}
+            redirectTo="/"
+          />
+          <GuardedRoute
+            path="/SignIn"
+            component={SignIn}
+            auth={!authenticated}
+            redirectTo="/"
+          />
+          <Route path="/Search" component={Search} />
+        </Switch>
       </Router>
     </ThemeProvider>
   );
