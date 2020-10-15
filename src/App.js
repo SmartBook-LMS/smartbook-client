@@ -1,6 +1,7 @@
 import {
   AppBar,
   Button,
+  CssBaseline,
   IconButton,
   makeStyles,
   ThemeProvider,
@@ -11,6 +12,15 @@ import MenuIcon from "@material-ui/icons/Menu";
 import React, { useEffect } from "react";
 import theme from "./theme";
 import { baseURL } from "./constants";
+import { BrowserRouter as Router, Route, Link, NavLink, Switch } from "react-router-dom";
+import NavBar from "./NavBar";
+import MyBook from './MyBook';
+import Account from './Account';
+import SignUp from './SignUp';
+import SignIn from './SignIn';
+import Search from './Search';
+//import Home from "./components/";
+import Home from "./Home";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -67,25 +77,34 @@ function App() {
   }, []);
 
   return (
-    <ThemeProvider theme={theme}>
-      <AppBar position="static">
-        <Toolbar>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="menu"
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" className={classes.title}>
-            SmartBook LMS
-          </Typography>
-          <Button color="inherit">Login</Button>
-        </Toolbar>
-      </AppBar>
-    </ThemeProvider>
+
+    <CssBaseline>
+      <Route exact path="/" component={Home} />
+      <Route path="/MyBook" component={MyBook} />
+      <Route path="/Account" component={Account} />
+      <Route path="/SignUp" component={SignUp} />
+      <Route path="/SignIn" component={SignIn} />
+      <Route path="/Search" component={Search} />
+    </CssBaseline>
+  
+   
   );
 }
+
+/*function AppRoutes() {
+  return (
+    <Switch>
+      <Route path="/">
+        <Home />
+      </Route>
+      <Route path="./MyBook">
+        <MyBook />
+      </Route>
+      <Route path="./Account">
+        <Account />
+      </Route>
+    </Switch>
+  );
+}*/
 
 export default App;
