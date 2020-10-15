@@ -48,7 +48,7 @@ const theme = createMuiTheme({
     backgroundColor: 'pink'
   },
   paper: {
-    textAlign: 'center',
+    // textAlign: 'center',
     marginTop: 100
   },
   submit: {
