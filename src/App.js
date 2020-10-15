@@ -1,14 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { ThemeProvider } from "@material-ui/core";
 import theme from "./theme";
-import { baseURL, useConstructor } from "./constants";
-import {
-  BrowserRouter as Router,
-  Route,
-  Link,
-  NavLink,
-  Switch,
-} from "react-router-dom";
+import { AuthContext, baseURL, useConstructor } from "./constants";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import MyBook from "./MyBook";
 import Account from "./Account";
 import SignUp from "./SignUp";
@@ -53,42 +47,43 @@ const makeCall = async () => {
 };
 
 function App() {
-  const [authenticated, setAuthenticated] = useState(false);
+  const [authToken, setAuthToken] = useState("");
   useConstructor(() => {
-    const token = localStorage.getItem("token");
-    if (token) setAuthenticated(true);
+    const token = localStorage.getItem("authToken");
+    if (token) setAuthToken(token);
   });
+
+  const hasAuth = authToken !== "";
+
+  const auth = {
+    authToken: authToken,
+    setAuthToken: setAuthToken,
+  };
 
   return (
     <ThemeProvider theme={theme}>
-      <Router>
-        <Switch>
-          <GuardedRoute exact path="/" component={Home} auth={authenticated} />
-          <GuardedRoute
-            path="/MyBook"
-            component={MyBook}
-            auth={authenticated}
-          />
-          <GuardedRoute
-            path="/Account"
-            component={Account}
-            auth={authenticated}
-          />
-          <GuardedRoute
-            path="/SignUp"
-            component={SignUp}
-            auth={!authenticated}
-            redirectTo="/"
-          />
-          <GuardedRoute
-            path="/SignIn"
-            component={SignIn}
-            auth={!authenticated}
-            redirectTo="/"
-          />
-          <Route path="/Search" component={Search} />
-        </Switch>
-      </Router>
+      <AuthContext.Provider value={auth}>
+        <Router>
+          <Switch>
+            <GuardedRoute exact path="/" component={Home} auth={hasAuth} />
+            <GuardedRoute path="/MyBook" component={MyBook} auth={hasAuth} />
+            <GuardedRoute path="/Account" component={Account} auth={hasAuth} />
+            <GuardedRoute
+              path="/SignUp"
+              component={SignUp}
+              auth={!hasAuth}
+              redirectTo="/"
+            />
+            <GuardedRoute
+              path="/SignIn"
+              component={SignIn}
+              auth={!hasAuth}
+              redirectTo="/"
+            />
+            <Route path="/Search" component={Search} />
+          </Switch>
+        </Router>
+      </AuthContext.Provider>
     </ThemeProvider>
   );
 }

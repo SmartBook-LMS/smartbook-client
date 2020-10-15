@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import {
   Box,
   Typography,
@@ -8,25 +8,66 @@ import {
   Avatar,
   TextField,
   Link,
+  useTheme,
+  FormControlLabel,
+  Checkbox,
 } from "@material-ui/core";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import useStyles from "./theme";
+import { AuthContext, baseURL } from "./constants";
+import { useForm } from "react-hook-form";
+import { BookOutlined } from "@material-ui/icons";
+
+const formErrors = {
+  username: "Username cannot be empty",
+  password: "Password cannot be empty",
+};
 
 function SignIn() {
+  // Setup form validation
+  const { register, handleSubmit, errors } = useForm();
+  const [loginError, setLoginError] = useState(null);
+
+  // Hook into form validation
+  const { setAuthToken } = useContext(AuthContext);
+  const onSubmit = async (formData) => {
+    const { username, password, librarian } = formData;
+    const user = {
+      username,
+      password,
+    };
+
+    const tokenHeader = {
+      "Content-Type": "application/json",
+    };
+
+    const tokenResponse = await fetch(`${baseURL}/login-user/`, {
+      method: "POST",
+      body: JSON.stringify(user),
+      headers: tokenHeader,
+    });
+    const tokenResponseJson = await tokenResponse.json();
+    if (tokenResponseJson.status === "error") {
+      setLoginError("Inputted credentials are invalid");
+    } else {
+      localStorage.setItem("authToken", tokenResponseJson.token);
+      setAuthToken(tokenResponseJson.token);
+    }
+  };
+
+  // Get the theme
+  const theme = useTheme();
   return (
     <Container component="main" maxWidth="xs">
-      <div style={useStyles.paper}>
-        <Avatar style={useStyles.avatar}>
-          <LockOutlinedIcon />
+      <div style={theme.paper}>
+        <Avatar style={theme.avatar}>
+          <BookOutlined />
         </Avatar>
-        <Typography
-          component="h1"
-          variant="h5"
-          srtle={{ marginTop: 10, marginBottom: 30 }}
-        >
-          Sign in
-        </Typography>
-        <form srtle={useStyles.form} noValidate>
+        <Box mt={1} mb={4}>
+          <Typography component="h1" variant="h5" align="center">
+            Sign in
+          </Typography>
+        </Box>
+
+        <form style={theme.form} noValidate onSubmit={handleSubmit(onSubmit)}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -36,6 +77,9 @@ function SignIn() {
             label="Username"
             name="username"
             autoComplete="name"
+            inputRef={register({ required: true, minLength: 1 })}
+            error={errors.username != null}
+            helperText={errors.username ? formErrors.username : ""}
             autoFocus
           />
           <TextField
@@ -48,17 +92,34 @@ function SignIn() {
             type="password"
             id="password"
             autoComplete="current-password"
+            inputRef={register({ required: true, minLength: 1 })}
+            error={errors.password != null}
+            helperText={errors.password ? formErrors.password : ""}
           />
-          <Link href="/" style={{ textDecoration: "none" }}>
-            <Button
-              fullWidth
-              variant="contained"
-              color="primary"
-              style={useStyles.submit}
-            >
-              Sign In
-            </Button>
-          </Link>
+          <FormControlLabel
+            control={
+              <Checkbox
+                inputRef={register}
+                name="librarian"
+                color="primary"
+                defaultValue={false}
+              />
+            }
+            label="I am a librarian"
+          />
+          <Typography color="error" variant="body1">
+            {loginError}
+          </Typography>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            style={theme.submit}
+          >
+            Sign In
+          </Button>
+          <Box mt={2}></Box>
           <Grid container>
             <Grid item>
               <Link href="/SignUp" variant="body2">
@@ -68,7 +129,6 @@ function SignIn() {
           </Grid>
         </form>
       </div>
-      <Box mt={8}></Box>
     </Container>
   );
 }

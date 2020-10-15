@@ -1,10 +1,10 @@
-import { useState } from "react";
+import React, { useState } from "react";
 
 export const useProduction = false;
 
 export const baseURL = useProduction
-  ? "https://backend-dot-smartbook-lms.uc.r.appspot.com/"
-  : "http://127.0.0.1:8000/";
+  ? "https://backend-dot-smartbook-lms.uc.r.appspot.com"
+  : "http://127.0.0.1:8000";
 
 export const useConstructor = (callBack = () => {}) => {
   const [hasBeenCalled, setHasBeenCalled] = useState(false);
@@ -12,3 +12,5 @@ export const useConstructor = (callBack = () => {}) => {
   callBack();
   setHasBeenCalled(true);
 };
+
+export const AuthContext = React.createContext({});
