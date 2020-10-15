@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   AppBar,
@@ -19,9 +19,12 @@ import theme from "./theme";
 
 import SignUp from "./SignUp";
 import SignIn from "./SignIn";
+import { AuthContext } from "./constants";
 
 function NavBar() {
   const [open, setOpen] = useState(false);
+  const { signOut } = useContext(AuthContext);
+
   const handleDrawer = () => {
     setOpen(true);
   };
@@ -59,9 +62,8 @@ function NavBar() {
               Account
             </Button>
           </Link>
-          <IconButton style={{ justifyContent: "end" }}>
-            {" "}
-            <MenuIcon onClick={handleDrawer} />
+          <IconButton style={{ justifyContent: "end" }} onClick={handleDrawer}>
+            <MenuIcon />
           </IconButton>
           <Drawer anchor="right" open={open} onClose={() => setOpen(false)}>
             <List style={{ backgroundColor: "pink" }}>
@@ -78,13 +80,9 @@ function NavBar() {
               ))}
             </List>
             <div style={theme.drawerContainer}>
-              <h5 style={theme.question}>Don't have Account?</h5>
-              {/*<Button variant="primary" style={theme.signupText} onClick={onOpenModal}>Sign Up!</Button> */}
-              <Link to="/SignUp" style={{ textDecoration: "none" }}>
-                <Button variant="h6" style={theme.signupText} onClick={SignUp}>
-                  Sign Up!
-                </Button>
-              </Link>
+              <Button variant="h6" style={theme.signupText} onClick={signOut}>
+                Sign Out
+              </Button>
             </div>
           </Drawer>
         </Toolbar>

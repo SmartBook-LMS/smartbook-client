@@ -58,6 +58,10 @@ function App() {
   const auth = {
     authToken: authToken,
     setAuthToken: setAuthToken,
+    signOut: () => {
+      localStorage.setItem("authToken", "");
+      setAuthToken("");
+    },
   };
 
   return (
