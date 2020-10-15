@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { Select, MenuItem, InputLabel, Box} from '@material-ui/core';
 import SearchBar from "material-ui-search-bar";
-import NavBar from './NavBar';
-import Header from './Header';
+import { SearchIcon } from "@material-ui/icons";
+import NavBar from "./NavBar";
 
+function Search() {
 
-
-function Home() {
-    const [age, setAge] = useState('');
     const [open, setOpen] = useState(false);
+    const [age, setAge] = useState('');
+
 
     const handleChange = (event) => {
         setAge(event.target.value);
@@ -19,12 +19,10 @@ function Home() {
     const handleOpen = () => {
         setOpen(true);
     };
-
-    return (
-        <Box>
-        <NavBar />
-        <Header />
-        <div style={{display: 'flex', flexDirection: 'row', marginTop: 250, alignItems: 'center', justifyContent:'center'}}>
+    return(
+        <dev>
+            <NavBar />
+            <div style={{display: 'flex', flexDirection: 'row', marginTop: 250, alignItems: 'center', justifyContent:'center'}}>
             <InputLabel id="demo-controlled-open-select-label" style={{marginRight: 20}}>Type</InputLabel>
 
             <Select
@@ -48,40 +46,8 @@ function Home() {
                 style={{width: 400}}
             />          
         </div>
-        </Box>      
+        </dev>
     );
 }
 
-export default Home;
-
-
-
-
-
-/**
- * Making another page for search
- * 
-import React, { useState } from "react";
-import { Select, MenuItem, InputLabel, Box, Button} from '@material-ui/core';
-import SearchBar from "material-ui-search-bar";
-import { Link } from "react-router-dom";
-import NavBar from './NavBar';
-import Header from './Header';
-
-
-
-function Home() {
-   
-
-    return (
-        <Box>
-        <NavBar />
-        <Header />
-        <Link to="/Search" style={{ textDecoration: 'none' }}><Button variant="h6" style={{ color: "black" }}><p>Search</p></Button></Link>
-        </Box>      
-    );
-}
-
-export default Home;
- */
-
+export default Search;
