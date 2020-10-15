@@ -1,5 +1,6 @@
 import {
   AppBar,
+  Box,
   Button,
   CssBaseline,
   IconButton,
@@ -12,13 +13,19 @@ import MenuIcon from "@material-ui/icons/Menu";
 import React, { useEffect } from "react";
 import theme from "./theme";
 import { baseURL } from "./constants";
-import { BrowserRouter as Router, Route, Link, NavLink, Switch } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  NavLink,
+  Switch,
+} from "react-router-dom";
 import NavBar from "./NavBar";
-import MyBook from './MyBook';
-import Account from './Account';
-import SignUp from './SignUp';
-import SignIn from './SignIn';
-import Search from './Search';
+import MyBook from "./MyBook";
+import Account from "./Account";
+import SignUp from "./SignUp";
+import SignIn from "./SignIn";
+import Search from "./Search";
 //import Home from "./components/";
 import Home from "./Home";
 
@@ -77,17 +84,14 @@ function App() {
   }, []);
 
   return (
-
-    <CssBaseline>
+    <Router>
       <Route exact path="/" component={Home} />
       <Route path="/MyBook" component={MyBook} />
       <Route path="/Account" component={Account} />
       <Route path="/SignUp" component={SignUp} />
       <Route path="/SignIn" component={SignIn} />
       <Route path="/Search" component={Search} />
-    </CssBaseline>
-  
-   
+    </Router>
   );
 }
 
