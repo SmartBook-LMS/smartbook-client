@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   Typography,
@@ -11,10 +11,60 @@ import {
 } from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import useStyles from "./theme";
+import { useForm } from "react-hook-form";
+import {
+  DatePicker,
+  MuiPickersUtilsProvider,
+
+} from "@material-ui/pickers";
+//import DateFnsUtils from "@material-ui/pickers/adapter/date-fns"; // choose your lib
+import DateFnsUtils from "@date-io/date-fns"; // import
+
+
 
 function SignUp() {
+  const formErrors = {
+    username: "Username cannot be empty",
+    password: "Password cannot be empty",
+  };
+
+  const { register, handleSubmit, errors } = useForm();
+  const [loginError, setLoginError] = useState(null);
+  const [signUpError, setSignUpError] = useState(null);
+
+  const [value, setValue] = useState(new Date());
+  const [selectedDate, handleDateChange] = useState(new Date());
+
+  /*
+  const onSubmit = async (formData) => {
+    const { username, password, librarian } = formData;
+    const {  }
+    const user = {
+      username,
+      password,
+    };
+
+    const tokenHeader = {
+      "Content-Type": "application/json",
+    };
+
+    const tokenResponse = await fetch(`${baseURL}/login-user/`, {
+      method: "POST",
+      body: JSON.stringify(user),
+      headers: tokenHeader,
+    });
+    const tokenResponseJson = await tokenResponse.json();
+    if (tokenResponseJson.status === "error") {
+      setLoginError("Inputted credentials are invalid");
+    } else {
+      localStorage.setItem("authToken", tokenResponseJson.token);
+      setAuthToken(tokenResponseJson.token);
+    }
+  };*/
+
   return (
     <Box>
+
       <div>
         <Typography
           component="header"
@@ -71,6 +121,42 @@ function SignUp() {
                   variant="outlined"
                   required
                   fullWidth
+                  id="username"
+                  label="Username"
+                  name="username"
+                  autoComplete="name"
+                />
+              </Grid>
+              <Grid item xs={12}>
+              <Typography
+                component="h1"
+                variant="caption"
+                >Birthday
+              </Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <MuiPickersUtilsProvider utils={DateFnsUtils} >
+                  <DatePicker
+                    placeholder="MM/DD/YYYY"
+                    format={"MM/dd/yyyy"}
+                    mask={value =>
+                      value
+                        ? [/\d/, /\d/, "/", /\d/, /\d/, "/", /\d/, /\d/, /\d/, /\d/]
+                        : []
+                    }
+                    value={selectedDate}
+                    onChange={handleDateChange}
+                    animateYearScrolling={false}
+                    autoOk={true}
+                    clearable
+                  />
+                </MuiPickersUtilsProvider>
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
                   id="email"
                   label="Email Address"
                   name="email"
@@ -111,6 +197,7 @@ function SignUp() {
         </div>
         <Box mt={5}></Box>
       </Container>
+
     </Box>
   );
 }
