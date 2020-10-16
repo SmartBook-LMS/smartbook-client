@@ -1,77 +1,55 @@
 import React, { useState } from "react";
 import {
-  Box,
   Typography,
   Button,
   Container,
-  Grid,
   Avatar,
   TextField,
   Link,
+  useTheme,
 } from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import useStyles from "./theme";
 import { useForm } from "react-hook-form";
 import {
   DatePicker,
-  MuiPickersUtilsProvider,
-
+  MuiPickersUtilsProvider
 } from "@material-ui/pickers";
-//import DateFnsUtils from "@material-ui/pickers/adapter/date-fns"; // choose your lib
 import DateFnsUtils from "@date-io/date-fns"; // import
 
 
 
 function SignUp() {
+  const theme = useTheme();
+
   const formErrors = {
-    username: "Username cannot be empty",
-    password: "Password cannot be empty",
+    errorMessage: "This field is required",
+    invalidEmail: "Email not in right format"
   };
 
   const { register, handleSubmit, errors } = useForm();
-  const [loginError, setLoginError] = useState(null);
-  const [signUpError, setSignUpError] = useState(null);
+  const [selectedDate, handleDateChange] = useState(null);
 
-  const [value, setValue] = useState(new Date());
-  const [selectedDate, handleDateChange] = useState(new Date());
-
-  /*
   const onSubmit = async (formData) => {
-    const { username, password, librarian } = formData;
-    const {  }
+    const { firstName, lastName, username, birthday, email, password } = formData;
     const user = {
+      firstName,
+      lastName,
       username,
+      birthday,
+      email,
       password,
     };
-
-    const tokenHeader = {
-      "Content-Type": "application/json",
-    };
-
-    const tokenResponse = await fetch(`${baseURL}/login-user/`, {
-      method: "POST",
-      body: JSON.stringify(user),
-      headers: tokenHeader,
-    });
-    const tokenResponseJson = await tokenResponse.json();
-    if (tokenResponseJson.status === "error") {
-      setLoginError("Inputted credentials are invalid");
-    } else {
-      localStorage.setItem("authToken", tokenResponseJson.token);
-      setAuthToken(tokenResponseJson.token);
-    }
-  };*/
+  };
 
   return (
-    <Box>
-
+    <div>
       <div>
         <Typography
           component="header"
           variant="h6"
           style={{ marginLeft: 50, marginTop: 50 }}
-        >
-          Welcome!
+        >Welcome!
         </Typography>
       </div>
       <div>
@@ -80,22 +58,20 @@ function SignUp() {
         </Typography>
       </div>
       <Container component="main" maxWidth="xs">
-        <div style={useStyles.paper}>
-          <Avatar style={useStyles.avatar}>
+        <div style={theme.paper}>
+          <Avatar style={theme.avatar}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography
             component="h1"
             variant="h5"
             style={{ marginTop: 10, marginBottom: 30 }}
-          >
-            Sign up
+          >Sign up
           </Typography>
-          <form srtle={useStyles.form} noValidate>
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <TextField
+          <form srtle={theme.form} noValidate onSubmit={handleSubmit(onSubmit)}>  
+              <TextField
                   autoComplete="fname"
+                  margin="normal"
                   name="firstName"
                   variant="outlined"
                   required
@@ -103,102 +79,102 @@ function SignUp() {
                   id="firstName"
                   label="First Name"
                   autoFocus
+                  inputRef={register({ required: true, minLength: 1 })}
+                  error={errors.firstName != null }
+                  helperText={errors.firstName ? formErrors.errorMessage : ""}
                 />
-              </Grid>
-              <Grid item xs={12} sm={6}>
                 <TextField
                   variant="outlined"
+                  margin="normal"
                   required
                   fullWidth
                   id="lastName"
                   label="Last Name"
                   name="lastName"
                   autoComplete="lname"
+                  type="lastName"
+                  inputRef={register({ required: true, minLength: 1 })}
+                  error={errors.lastName != null}
+                  helperText={errors.lastName ? formErrors.errorMessage : ""}
                 />
-              </Grid>
-              <Grid item xs={12}>
                 <TextField
                   variant="outlined"
+                  margin="normal"
                   required
                   fullWidth
                   id="username"
                   label="Username"
                   name="username"
                   autoComplete="name"
+                  type="username"
+                  inputRef={register({ required: true, minLength: 1 })}
+                  error={errors.username != null}
+                  helperText={errors.username ? formErrors.errorMessage : ""}
                 />
-              </Grid>
-              <Grid item xs={12}>
               <Typography
                 component="h1"
                 variant="caption"
+                margin="normal"
                 >Birthday
               </Typography>
-              </Grid>
-              <Grid item xs={12}>
                 <MuiPickersUtilsProvider utils={DateFnsUtils} >
                   <DatePicker
                     placeholder="MM/DD/YYYY"
                     format={"MM/dd/yyyy"}
-                    mask={value =>
-                      value
-                        ? [/\d/, /\d/, "/", /\d/, /\d/, "/", /\d/, /\d/, /\d/, /\d/]
-                        : []
-                    }
                     value={selectedDate}
                     onChange={handleDateChange}
                     animateYearScrolling={false}
                     autoOk={true}
                     clearable
+                    type="birthday"
+                    inputRef={register({ required: true, minLength: 1 })}
+                    error={errors.birthday != null}
+                    helperText={errors.birthday ? formErrors.errorMessage : ""}
                   />
                 </MuiPickersUtilsProvider>
-              </Grid>
-              <Grid item xs={12}>
                 <TextField
                   variant="outlined"
                   required
                   fullWidth
+                  margin="normal"
                   id="email"
                   label="Email Address"
                   name="email"
                   autoComplete="email"
+                  type="email"
+                  inputRef={register({ required: true, minLength: 1, pattern: /(.+)@(.+){2,}\.(.+){2,}/ })}
+                  error={errors.email != null}
+                  helperText={errors.email ? formErrors.errorMessage : "" ? formErrors.invalidEmail : ""}
                 />
-              </Grid>
-              <Grid item xs={12}>
                 <TextField
                   variant="outlined"
                   required
                   fullWidth
+                  margin="normal"
                   name="password"
                   label="Password"
                   type="password"
                   id="password"
                   autoComplete="current-password"
+                  inputRef={register({ required: true, minLength: 1 })}
+                  error={errors.password != null}
+                  helperText={errors.password ? formErrors.password : ""}
                 />
-              </Grid>
-            </Grid>
-            <Link href="/" style={{ textDecoration: "none" }}>
               <Button
                 fullWidth
                 variant="contained"
                 color="primary"
                 style={useStyles.submit}
-              >
-                Sign Up
+                type="submit"
+              >Sign Up
               </Button>
-            </Link>
-            <Grid container justify="flex-end">
-              <Grid item>
                 <Link href="/SignIn" variant="body2">
                   Already have an account? Sign in
                 </Link>
-              </Grid>
-            </Grid>
           </form>
         </div>
-        <Box mt={5}></Box>
       </Container>
-
-    </Box>
+    </div>
   );
 }
 

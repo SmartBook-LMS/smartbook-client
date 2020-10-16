@@ -4,7 +4,6 @@ import {
   AppBar,
   Toolbar,
   Box,
-  Typography,
   Button,
   IconButton,
   Drawer,
@@ -16,9 +15,6 @@ import {
 import MenuIcon from "@material-ui/icons/Menu";
 import AccountCircleRoundedIcon from "@material-ui/icons/AccountCircleRounded";
 import theme from "./theme";
-
-import SignUp from "./SignUp";
-import SignIn from "./SignIn";
 import { AuthContext } from "./constants";
 
 function NavBar() {

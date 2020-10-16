@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { Select, MenuItem, InputLabel, Box} from '@material-ui/core';
+import { Select, MenuItem, InputLabel } from '@material-ui/core';
 import SearchBar from "material-ui-search-bar";
-import { SearchIcon } from "@material-ui/icons";
 import NavBar from "./NavBar";
 
 function Search() {

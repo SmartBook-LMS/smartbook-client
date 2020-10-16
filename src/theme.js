@@ -1,7 +1,4 @@
-import { useTheme, createMuiTheme } from "@material-ui/core";
-import { indigo, pink } from "@material-ui/core/colors";
-import { makeStyles } from '@material-ui/core/styles';
-
+import { createMuiTheme } from "@material-ui/core";
 
 const theme = createMuiTheme({
   palette: {
@@ -37,7 +34,6 @@ const theme = createMuiTheme({
     left: '35%', 
     position: 'absolute', 
     fontWeight: 90, 
-    fontSize: 25
   },
   searchContainer: {
     backgroundColor: 'pink',
@@ -56,32 +52,5 @@ const theme = createMuiTheme({
   },
   
 });
-
-
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(3),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
-  root: {
-    height: "100vh",
-  },
-  paper: {
-    marginTop: 100
-  }
-  }));
 
 export default theme;

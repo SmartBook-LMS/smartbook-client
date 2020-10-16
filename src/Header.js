@@ -1,9 +1,5 @@
 import React from "react";
-import { Link, useHistory, useLocation } from "react-router-dom";
-import { AppBar, Toolbar, Box, Typography, Button, IconButton, Drawer, List, ListItemIcon, ListItemText, ListItem} from '@material-ui/core';
-import NavBar from './NavBar';
-import Typed from "react-typed";
-
+import { Box, Typography } from '@material-ui/core';
 
 function Header() {
     return (
