@@ -14,3 +14,9 @@ export const useConstructor = (callBack = () => {}) => {
 };
 
 export const AuthContext = React.createContext({});
+
+export const convertSQLAccount = (sqlAccount) => {
+  const birthdate = new Date(sqlAccount.birthdate);
+  birthdate.setDate(birthdate.getDate() + 1);
+  return { ...sqlAccount, birthdate };
+};

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { ThemeProvider } from "@material-ui/core";
 import theme from "./theme";
-import { AuthContext, useConstructor } from "./constants";
+import { AuthContext, baseURL, convertSQLAccount, useConstructor } from "./constants";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import MyBook from "./MyBook";
 import Account from "./Account";
@@ -10,6 +10,7 @@ import SignIn from "./SignIn";
 import Search from "./Search";
 import Home from "./Home";
 import GuardedRoute from "./components/GuardedRoute";
+import LoadingScreen from "./components/LoadingScreen";
 
 // const makeCall = async () => {
 //   let token = localStorage.getItem("token");
@@ -48,14 +49,33 @@ import GuardedRoute from "./components/GuardedRoute";
 
 function App() {
   const [authToken, setAuthToken] = useState("");
-  useConstructor(() => {
+  const [account, setAccount] = useState({});
+  const [loading, setLoading] = useState(true);
+
+  useConstructor(async () => {
     const token = localStorage.getItem("authToken");
-    if (token) setAuthToken(token);
+
+    // Check if the token is in local storage
+    if (token) {
+      const dataHeader = {
+        Authorization: `Token ${token}`,
+      };
+      const dataResponse = await fetch(`${baseURL}/user-info/`, {
+        headers: dataHeader,
+      });
+      const dataResponseJson = await dataResponse.json();
+      if (dataResponseJson.status === "success") {
+        setAuthToken(token);
+        setAccount(convertSQLAccount(dataResponseJson.account));
+      }
+    }
+    setLoading(false);
   });
 
   const hasAuth = authToken !== "";
 
   const auth = {
+    account: account,
     authToken: authToken,
     setAuthToken: setAuthToken,
     signOut: () => {
@@ -64,6 +84,8 @@ function App() {
     },
   };
 
+  if (loading) return <LoadingScreen />;
+  console.log(account);
   return (
     <ThemeProvider theme={theme}>
       <AuthContext.Provider value={auth}>
