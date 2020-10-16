@@ -8,6 +8,8 @@ import {
   Link,
   useTheme,
   Box,
+  FormControlLabel,
+  Checkbox,
 } from "@material-ui/core";
 import { Controller, useForm } from "react-hook-form";
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
@@ -160,6 +162,17 @@ function SignUp() {
               inputRef={register({ required: true, minLength: 1 })}
               error={errors.password != null}
               helperText={errors.password ? formErrors.password : ""}
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  inputRef={register}
+                  name="librarian"
+                  color="primary"
+                  defaultValue={false}
+                />
+              }
+              label="I am a librarian"
             />
             <Typography color="error" variant="body1">
               {creationError}
