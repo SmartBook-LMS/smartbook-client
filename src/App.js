@@ -11,40 +11,40 @@ import Search from "./Search";
 import Home from "./Home";
 import GuardedRoute from "./components/GuardedRoute";
 
-const makeCall = async () => {
-  let token = localStorage.getItem("token");
+// const makeCall = async () => {
+//   let token = localStorage.getItem("token");
 
-  if (token == null) {
-    const user = {
-      username: "dkambich",
-      password: "1234",
-    };
+//   if (token == null) {
+//     const user = {
+//       username: "dkambich",
+//       password: "1234",
+//     };
 
-    const tokenHeader = {
-      "Content-Type": "application/json",
-    };
+//     const tokenHeader = {
+//       "Content-Type": "application/json",
+//     };
 
-    const tokenResponse = await fetch(`${baseURL}/login-user/`, {
-      method: "POST",
-      body: JSON.stringify(user),
-      headers: tokenHeader,
-    });
-    const tokenResponseJson = await tokenResponse.json();
-    token = tokenResponseJson.token;
-    localStorage.setItem("token", tokenResponseJson.token);
-  } else {
-    console.log("Cached token is " + token);
-  }
+//     const tokenResponse = await fetch(`${baseURL}/login-user/`, {
+//       method: "POST",
+//       body: JSON.stringify(user),
+//       headers: tokenHeader,
+//     });
+//     const tokenResponseJson = await tokenResponse.json();
+//     token = tokenResponseJson.token;
+//     localStorage.setItem("token", tokenResponseJson.token);
+//   } else {
+//     console.log("Cached token is " + token);
+//   }
 
-  const dataHeader = {
-    Authorization: `Token ${token}`,
-  };
-  const dataResponse = await fetch(`${baseURL}/sample-sql/`, {
-    headers: dataHeader,
-  });
-  const dataResponseJson = await dataResponse.json();
-  console.log(dataResponseJson);
-};
+//   const dataHeader = {
+//     Authorization: `Token ${token}`,
+//   };
+//   const dataResponse = await fetch(`${baseURL}/sample-sql/`, {
+//     headers: dataHeader,
+//   });
+//   const dataResponseJson = await dataResponse.json();
+//   console.log(dataResponseJson);
+// };
 
 function App() {
   const [authToken, setAuthToken] = useState("");
