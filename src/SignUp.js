@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Typography,
   Button,
@@ -13,6 +13,7 @@ import { Controller, useForm } from "react-hook-form";
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns"; // import
 import { BookOutlined } from "@material-ui/icons";
+import { AuthContext, baseURL } from "./constants";
 
 const formErrors = {
   firstName: "First name cannot be empty",
@@ -26,17 +27,37 @@ function SignUp() {
   // Setup form validation
   const { register, handleSubmit, errors, control } = useForm();
   const [creationError, setCreationError] = useState(null);
-  const theme = useTheme();
+  const [selectedDate, setSelectedDate] = useState(null);
 
-  const [selectedDate, handleDateChange] = useState(null);
-
+  // Hook into form validation
+  const { setAuthToken } = useContext(AuthContext);
   const onSubmit = async (formData) => {
-    console.log(formData.birthday);
     const user = {
       ...formData,
     };
+    const tokenHeader = {
+      "Content-Type": "application/json",
+    };
+
+    const tokenResponse = await fetch(`${baseURL}/create-user/`, {
+      method: "POST",
+      body: JSON.stringify(user),
+      headers: tokenHeader,
+    });
+    console.log(tokenResponse);
+    const tokenResponseJson = await tokenResponse.json();
+    console.log(tokenResponseJson);
+
+    if (tokenResponseJson.status === "error") {
+      setCreationError(tokenResponseJson.errorMessage);
+    } else {
+      localStorage.setItem("authToken", tokenResponseJson.token);
+      setAuthToken(tokenResponseJson.token);
+    }
   };
 
+  // Get the theme
+  const theme = useTheme();
   return (
     <div>
       <div>
@@ -96,7 +117,7 @@ function SignUp() {
                 rules={{ required: true }}
                 value={selectedDate}
                 onChange={([selected]) => {
-                  handleDateChange(selected);
+                  setSelectedDate(selected);
                   return selected;
                 }}
                 name="birthday"
@@ -140,6 +161,9 @@ function SignUp() {
               error={errors.password != null}
               helperText={errors.password ? formErrors.password : ""}
             />
+            <Typography color="error" variant="body1">
+              {creationError}
+            </Typography>
             <Button
               type="submit"
               fullWidth

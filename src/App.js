@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { ThemeProvider } from "@material-ui/core";
 import theme from "./theme";
-import { AuthContext, baseURL, useConstructor } from "./constants";
+import { AuthContext, useConstructor } from "./constants";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import MyBook from "./MyBook";
 import Account from "./Account";
