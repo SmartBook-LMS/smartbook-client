@@ -15,7 +15,7 @@ import { Controller, useForm } from "react-hook-form";
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns"; // import
 import { BookOutlined } from "@material-ui/icons";
-import { AuthContext, baseURL } from "./constants";
+import { AuthContext, baseURL } from "../core/constants";
 
 const formErrors = {
   firstName: "First name cannot be empty",
@@ -25,7 +25,7 @@ const formErrors = {
   password: "Password cannot be empty",
 };
 
-function SignUp() {
+function SignUpPage() {
   // Setup form validation
   const { register, handleSubmit, errors, control } = useForm();
   const [creationError, setCreationError] = useState(null);
@@ -198,4 +198,4 @@ function SignUp() {
   );
 }
 
-export default SignUp;
+export default SignUpPage;

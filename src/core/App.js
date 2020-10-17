@@ -8,14 +8,15 @@ import {
   useConstructor,
 } from "./constants";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import MyBook from "./MyBook";
-import Account from "./Account";
-import SignUp from "./SignUp";
-import SignIn from "./SignIn";
-import Search from "./Search";
-import Home from "./Home";
-import GuardedRoute from "./components/GuardedRoute";
-import LoadingScreen from "./components/LoadingScreen";
+import GuardedRoute from "../components/GuardedRoute";
+
+import SignUpPage from "../pages/SignUpPage";
+import SignInPage from "../pages/SignInPage";
+import SearchPage from "../pages/SearchPage";
+import HomePage from "../pages/HomePage";
+import CheckoutsPage from "../pages/CheckoutsPage";
+import LoadingPage from "../pages/LoadingPage";
+import AccountPage from "../pages/AccountPage";
 
 // const makeCall = async () => {
 //   let token = localStorage.getItem("token");
@@ -92,7 +93,7 @@ function App() {
   if (loading)
     return (
       <ThemeProvider theme={theme}>
-        <LoadingScreen />
+        <LoadingPage />
       </ThemeProvider>
     );
   console.log(account);
@@ -101,43 +102,35 @@ function App() {
       <AuthContext.Provider value={auth}>
         <Router>
           <Switch>
-            <GuardedRoute exact path="/" component={Home} auth={hasAuth} />
-            <GuardedRoute path="/MyBook" component={MyBook} auth={hasAuth} />
-            <GuardedRoute path="/Account" component={Account} auth={hasAuth} />
+            <GuardedRoute exact path="/" component={HomePage} auth={hasAuth} />
+            <GuardedRoute
+              path="/Checkouts"
+              component={CheckoutsPage}
+              auth={hasAuth}
+            />
+            <GuardedRoute
+              path="/Account"
+              component={AccountPage}
+              auth={hasAuth}
+            />
             <GuardedRoute
               path="/SignUp"
-              component={SignUp}
+              component={SignUpPage}
               auth={!hasAuth}
               redirectTo="/"
             />
             <GuardedRoute
               path="/SignIn"
-              component={SignIn}
+              component={SignInPage}
               auth={!hasAuth}
               redirectTo="/"
             />
-            <Route path="/Search" component={Search} />
+            <Route path="/Search" component={SearchPage} />
           </Switch>
         </Router>
       </AuthContext.Provider>
     </ThemeProvider>
   );
 }
-
-/*function AppRoutes() {
-  return (
-    <Switch>
-      <Route path="/">
-        <Home />
-      </Route>
-      <Route path="./MyBook">
-        <MyBook />
-      </Route>
-      <Route path="./Account">
-        <Account />
-      </Route>
-    </Switch>
-  );
-}*/
 
 export default App;

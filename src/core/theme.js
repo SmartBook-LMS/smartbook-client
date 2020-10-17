@@ -29,13 +29,6 @@ const theme = createMuiTheme({
     fontWeight: 800,
     fontSize: 15,
   },
-  signupText: {
-    color: "white",
-    bottom: 20,
-    left: "35%",
-    position: "absolute",
-    fontWeight: 90,
-  },
   searchContainer: {
     backgroundColor: "pink",
     padding: 100,

@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const LoadingScreen = () => {
+const LoadingPage = () => {
   const styles = useStyles();
   return (
     <Box
@@ -49,4 +49,4 @@ const LoadingScreen = () => {
   );
 };
 
-export default LoadingScreen;
+export default LoadingPage;

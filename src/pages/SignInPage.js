@@ -12,7 +12,7 @@ import {
   FormControlLabel,
   Checkbox,
 } from "@material-ui/core";
-import { AuthContext, baseURL } from "./constants";
+import { AuthContext, baseURL } from "../core/constants";
 import { useForm } from "react-hook-form";
 import { BookOutlined } from "@material-ui/icons";
 
@@ -21,7 +21,7 @@ const formErrors = {
   password: "Password cannot be empty",
 };
 
-function SignIn() {
+function SignInPage() {
   // Setup form validation
   const { register, handleSubmit, errors } = useForm();
   const [loginError, setLoginError] = useState(null);
@@ -133,4 +133,4 @@ function SignIn() {
   );
 }
 
-export default SignIn;
+export default SignInPage;
