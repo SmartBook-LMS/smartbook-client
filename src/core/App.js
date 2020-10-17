@@ -1,58 +1,21 @@
 import React, { useState } from "react";
 import { ThemeProvider } from "@material-ui/core";
 import theme from "./theme";
-import {
-  AuthContext,
-  baseURL,
-  convertSQLAccount,
-  useConstructor,
-} from "./constants";
+import { AuthContext, useConstructor } from "./constants";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import GuardedRoute from "../components/GuardedRoute";
 
-import SignUpPage from "../pages/SignUpPage";
-import SignInPage from "../pages/SignInPage";
-import SearchPage from "../pages/SearchPage";
-import HomePage from "../pages/HomePage";
-import CheckoutsPage from "../pages/CheckoutsPage";
-import LoadingPage from "../pages/LoadingPage";
-import AccountPage from "../pages/AccountPage";
+import {
+  AccountPage,
+  CheckoutsPage,
+  HomePage,
+  LoadingPage,
+  SearchPage,
+  SignInPage,
+  SignUpPage,
+} from "../pages";
+
 import { GetUserInfo } from "./requests";
-
-// const makeCall = async () => {
-//   let token = localStorage.getItem("token");
-
-//   if (token == null) {
-//     const user = {
-//       username: "dkambich",
-//       password: "1234",
-//     };
-
-//     const tokenHeader = {
-//       "Content-Type": "application/json",
-//     };
-
-//     const tokenResponse = await fetch(`${baseURL}/login-user/`, {
-//       method: "POST",
-//       body: JSON.stringify(user),
-//       headers: tokenHeader,
-//     });
-//     const tokenResponseJson = await tokenResponse.json();
-//     token = tokenResponseJson.token;
-//     localStorage.setItem("token", tokenResponseJson.token);
-//   } else {
-//     console.log("Cached token is " + token);
-//   }
-
-//   const dataHeader = {
-//     Authorization: `Token ${token}`,
-//   };
-//   const dataResponse = await fetch(`${baseURL}/sample-sql/`, {
-//     headers: dataHeader,
-//   });
-//   const dataResponseJson = await dataResponse.json();
-//   console.log(dataResponseJson);
-// };
 
 function App() {
   const [authToken, setAuthToken] = useState("");
@@ -68,7 +31,9 @@ function App() {
         const account = await GetUserInfo(token);
         setAuthToken(token);
         setAccount(account);
-      } catch (e) {}
+      } catch (e) {
+        localStorage.removeItem("authToken");
+      }
     }
     setLoading(false);
   });
