@@ -2,7 +2,12 @@ import React, { useState } from "react";
 import { ThemeProvider } from "@material-ui/core";
 import theme from "./theme";
 import { AuthContext, useConstructor } from "./constants";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Redirect,
+  Route,
+  Switch,
+} from "react-router-dom";
 import GuardedRoute from "../components/GuardedRoute";
 
 import {
@@ -75,6 +80,11 @@ function App() {
               auth={hasAuth}
             />
             <GuardedRoute
+              path="/Search"
+              component={SearchPage}
+              auth={hasAuth}
+            />
+            <GuardedRoute
               path="/SignUp"
               component={SignUpPage}
               auth={!hasAuth}
@@ -86,7 +96,8 @@ function App() {
               auth={!hasAuth}
               redirectTo="/"
             />
-            <Route path="/Search" component={SearchPage} />
+            {/* The line below needs to stay at the end of the switch, this catches any extra urls and redirects to '/' */}
+            <Route render={() => <Redirect to="/" />} />
           </Switch>
         </Router>
       </AuthContext.Provider>
