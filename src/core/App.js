@@ -44,6 +44,7 @@ function App() {
     account: account,
     authToken: authToken,
     setAuthToken: setAuthToken,
+    setAccount: setAccount,
     signOut: () => {
       localStorage.setItem("authToken", "");
       setAuthToken("");

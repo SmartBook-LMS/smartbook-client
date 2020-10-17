@@ -12,9 +12,10 @@ import {
   FormControlLabel,
   Checkbox,
 } from "@material-ui/core";
-import { AuthContext, baseURL } from "../core/constants";
+import { AuthContext } from "../core/constants";
 import { useForm } from "react-hook-form";
 import { BookOutlined } from "@material-ui/icons";
+import { LoginUser } from "../core/requests";
 
 const formErrors = {
   username: "Username cannot be empty",
@@ -27,29 +28,22 @@ function SignInPage() {
   const [loginError, setLoginError] = useState(null);
 
   // Hook into form validation
-  const { setAuthToken } = useContext(AuthContext);
+  const { setAuthToken, setAccount } = useContext(AuthContext);
   const onSubmit = async (formData) => {
     const { username, password, librarian } = formData;
     const user = {
       username,
       password,
+      librarian,
     };
 
-    const tokenHeader = {
-      "Content-Type": "application/json",
-    };
-
-    const tokenResponse = await fetch(`${baseURL}/login-user/`, {
-      method: "POST",
-      body: JSON.stringify(user),
-      headers: tokenHeader,
-    });
-    const tokenResponseJson = await tokenResponse.json();
-    if (tokenResponseJson.status === "error") {
+    const response = await LoginUser(user);
+    if (response.status === "error") {
       setLoginError("Inputted credentials are invalid");
     } else {
-      localStorage.setItem("authToken", tokenResponseJson.token);
-      setAuthToken(tokenResponseJson.token);
+      localStorage.setItem("authToken", response.token);
+      setAccount(response.account);
+      setAuthToken(response.token);
     }
   };
 

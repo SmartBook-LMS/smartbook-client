@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export const useProduction = true;
+export const useProduction = false;
 
 export const baseURL = useProduction
   ? "https://backend-dot-smartbook-lms.uc.r.appspot.com/"
@@ -14,9 +14,3 @@ export const useConstructor = (callBack = () => {}) => {
 };
 
 export const AuthContext = React.createContext({});
-
-export const convertSQLAccount = (sqlAccount) => {
-  const birthdate = new Date(sqlAccount.birthdate);
-  birthdate.setDate(birthdate.getDate() + 1);
-  return { ...sqlAccount, birthdate };
-};

@@ -1,11 +1,32 @@
-import { baseURL, convertSQLAccount } from "./constants";
+import { baseURL } from "./constants";
 
 const endpoints = {
   userInfo: "user-info/",
+  loginUser: "login-user/",
 };
 
 const errors = {
   unauthorized: new Error("Unauthorized"),
+};
+
+const convertSQLAccount = (sqlAccount) => {
+  const birthdate = new Date(sqlAccount.birthdate);
+  birthdate.setDate(birthdate.getDate() + 1);
+  return { ...sqlAccount, birthdate };
+};
+
+export const LoginUser = async (credentials) => {
+  const header = {
+    "Content-Type": "application/json",
+  };
+
+  const tokenResponse = await fetch(`${baseURL}${endpoints.loginUser}`, {
+    method: "POST",
+    body: JSON.stringify(credentials),
+    headers: header,
+  });
+
+  return await tokenResponse.json();
 };
 
 export const GetUserInfo = async (token) => {
