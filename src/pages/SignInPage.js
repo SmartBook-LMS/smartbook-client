@@ -12,44 +12,39 @@ import {
   FormControlLabel,
   Checkbox,
 } from "@material-ui/core";
-import { AuthContext, baseURL } from "./constants";
+import { AuthContext } from "../core/constants";
 import { useForm } from "react-hook-form";
 import { BookOutlined } from "@material-ui/icons";
+import { LoginUser, convertSQLAccount } from "../core/requests";
 
 const formErrors = {
   username: "Username cannot be empty",
   password: "Password cannot be empty",
 };
 
-function SignIn() {
+function SignInPage() {
   // Setup form validation
   const { register, handleSubmit, errors } = useForm();
   const [loginError, setLoginError] = useState(null);
 
   // Hook into form validation
-  const { setAuthToken } = useContext(AuthContext);
+  const { setAuthToken, setAccount } = useContext(AuthContext);
   const onSubmit = async (formData) => {
     const { username, password, librarian } = formData;
     const user = {
       username,
       password,
+      librarian,
     };
 
-    const tokenHeader = {
-      "Content-Type": "application/json",
-    };
+    const response = await LoginUser(user);
 
-    const tokenResponse = await fetch(`${baseURL}/login-user/`, {
-      method: "POST",
-      body: JSON.stringify(user),
-      headers: tokenHeader,
-    });
-    const tokenResponseJson = await tokenResponse.json();
-    if (tokenResponseJson.status === "error") {
+    if (response.status === "error") {
       setLoginError("Inputted credentials are invalid");
     } else {
-      localStorage.setItem("authToken", tokenResponseJson.token);
-      setAuthToken(tokenResponseJson.token);
+      localStorage.setItem("authToken", response.token);
+      setAccount(convertSQLAccount(response.account));
+      setAuthToken(response.token);
     }
   };
 
@@ -133,4 +128,4 @@ function SignIn() {
   );
 }
 
-export default SignIn;
+export default SignInPage;

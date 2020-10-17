@@ -1,8 +1,8 @@
 import React from "react";
-import NavBar from './NavBar';
+import NavBar from '../components/NavBar';
 
 
-function Account() {
+function AccountPage() {
     return (
         <div>
             <NavBar />
@@ -10,4 +10,4 @@ function Account() {
     );
 }
 
-export default Account;
+export default AccountPage;
