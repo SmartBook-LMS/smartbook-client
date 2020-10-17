@@ -48,6 +48,7 @@ function App() {
     signOut: () => {
       localStorage.setItem("authToken", "");
       setAuthToken("");
+      setAccount(null);
     },
   };
 
@@ -57,7 +58,6 @@ function App() {
         <LoadingPage />
       </ThemeProvider>
     );
-
   return (
     <ThemeProvider theme={theme}>
       <AuthContext.Provider value={auth}>

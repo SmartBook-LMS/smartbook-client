@@ -3,13 +3,14 @@ import { baseURL } from "./constants";
 const endpoints = {
   userInfo: "user-info/",
   loginUser: "login-user/",
+  createUser: "create-user/",
 };
 
 const errors = {
   unauthorized: new Error("Unauthorized"),
 };
 
-const convertSQLAccount = (sqlAccount) => {
+export const convertSQLAccount = (sqlAccount) => {
   const birthdate = new Date(sqlAccount.birthdate);
   birthdate.setDate(birthdate.getDate() + 1);
   return { ...sqlAccount, birthdate };
@@ -24,6 +25,20 @@ export const LoginUser = async (credentials) => {
     method: "POST",
     body: JSON.stringify(credentials),
     headers: header,
+  });
+
+  return await tokenResponse.json();
+};
+
+export const CreateUser = async (user) => {
+  const tokenHeader = {
+    "Content-Type": "application/json",
+  };
+
+  const tokenResponse = await fetch(`${baseURL}${endpoints.createUser}`, {
+    method: "POST",
+    body: JSON.stringify(user),
+    headers: tokenHeader,
   });
 
   return await tokenResponse.json();

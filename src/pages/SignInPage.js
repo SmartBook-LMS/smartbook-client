@@ -15,7 +15,7 @@ import {
 import { AuthContext } from "../core/constants";
 import { useForm } from "react-hook-form";
 import { BookOutlined } from "@material-ui/icons";
-import { LoginUser } from "../core/requests";
+import { LoginUser, convertSQLAccount } from "../core/requests";
 
 const formErrors = {
   username: "Username cannot be empty",
@@ -38,11 +38,12 @@ function SignInPage() {
     };
 
     const response = await LoginUser(user);
+
     if (response.status === "error") {
       setLoginError("Inputted credentials are invalid");
     } else {
       localStorage.setItem("authToken", response.token);
-      setAccount(response.account);
+      setAccount(convertSQLAccount(response.account));
       setAuthToken(response.token);
     }
   };

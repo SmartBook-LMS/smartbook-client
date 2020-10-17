@@ -15,7 +15,8 @@ import { Controller, useForm } from "react-hook-form";
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns"; // import
 import { BookOutlined } from "@material-ui/icons";
-import { AuthContext, baseURL } from "../core/constants";
+import { AuthContext } from "../core/constants";
+import { CreateUser, convertSQLAccount } from "../core/requests";
 
 const formErrors = {
   firstName: "First name cannot be empty",
@@ -32,29 +33,21 @@ function SignUpPage() {
   const [selectedDate, setSelectedDate] = useState(null);
 
   // Hook into form validation
-  const { setAuthToken } = useContext(AuthContext);
+  const { setAuthToken, setAccount } = useContext(AuthContext);
   const onSubmit = async (formData) => {
     const user = {
       ...formData,
     };
-    const tokenHeader = {
-      "Content-Type": "application/json",
-    };
 
-    const tokenResponse = await fetch(`${baseURL}/create-user/`, {
-      method: "POST",
-      body: JSON.stringify(user),
-      headers: tokenHeader,
-    });
-    console.log(tokenResponse);
-    const tokenResponseJson = await tokenResponse.json();
-    console.log(tokenResponseJson);
+    const response = await CreateUser(user);
 
-    if (tokenResponseJson.status === "error") {
-      setCreationError(tokenResponseJson.errorMessage);
+    if (response.status === "error") {
+      setCreationError(response.errorMessage);
     } else {
-      localStorage.setItem("authToken", tokenResponseJson.token);
-      setAuthToken(tokenResponseJson.token);
+      console.log(response);
+      localStorage.setItem("authToken", response.token);
+      setAccount(convertSQLAccount(response.account));
+      setAuthToken(response.token);
     }
   };
 
