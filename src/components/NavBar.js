@@ -59,9 +59,7 @@ const useStyles = makeStyles((theme) => ({
 function NabBarLink({ text, to }) {
   return (
     <Link to={to} style={{ textDecoration: "none" }}>
-      <Button variant="h6" style={{ color: "white" }}>
-        {text}
-      </Button>
+      <Button style={{ color: "white" }}>{text}</Button>
     </Link>
   );
 }

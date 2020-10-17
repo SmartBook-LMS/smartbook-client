@@ -17,6 +17,7 @@ import HomePage from "../pages/HomePage";
 import CheckoutsPage from "../pages/CheckoutsPage";
 import LoadingPage from "../pages/LoadingPage";
 import AccountPage from "../pages/AccountPage";
+import { GetUserInfo } from "./requests";
 
 // const makeCall = async () => {
 //   let token = localStorage.getItem("token");
@@ -63,17 +64,11 @@ function App() {
 
     // Check if the token is in local storage
     if (token) {
-      const dataHeader = {
-        Authorization: `Token ${token}`,
-      };
-      const dataResponse = await fetch(`${baseURL}/user-info/`, {
-        headers: dataHeader,
-      });
-      const dataResponseJson = await dataResponse.json();
-      if (dataResponseJson.status === "success") {
+      try {
+        const account = await GetUserInfo(token);
         setAuthToken(token);
-        setAccount(convertSQLAccount(dataResponseJson.account));
-      }
+        setAccount(account);
+      } catch (e) {}
     }
     setLoading(false);
   });
@@ -96,7 +91,7 @@ function App() {
         <LoadingPage />
       </ThemeProvider>
     );
-  console.log(account);
+
   return (
     <ThemeProvider theme={theme}>
       <AuthContext.Provider value={auth}>
