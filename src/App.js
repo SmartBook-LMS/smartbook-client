@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import { ThemeProvider } from "@material-ui/core";
 import theme from "./theme";
-import { AuthContext, baseURL, convertSQLAccount, useConstructor } from "./constants";
+import {
+  AuthContext,
+  baseURL,
+  convertSQLAccount,
+  useConstructor,
+} from "./constants";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import MyBook from "./MyBook";
 import Account from "./Account";
@@ -84,7 +89,12 @@ function App() {
     },
   };
 
-  if (loading) return <LoadingScreen />;
+  if (loading)
+    return (
+      <ThemeProvider theme={theme}>
+        <LoadingScreen />
+      </ThemeProvider>
+    );
   console.log(account);
   return (
     <ThemeProvider theme={theme}>

@@ -58,7 +58,11 @@ function NavBar() {
               Account
             </Button>
           </Link>
-          <IconButton style={{ justifyContent: "end" }} onClick={handleDrawer}>
+          <IconButton
+            style={{ justifyContent: "end" }}
+            onClick={handleDrawer}
+            color="inherit"
+          >
             <MenuIcon />
           </IconButton>
           <Drawer anchor="right" open={open} onClose={() => setOpen(false)}>
