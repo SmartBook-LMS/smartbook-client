@@ -18,6 +18,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import AccountCircleRoundedIcon from "@material-ui/icons/AccountCircleRounded";
 import { AuthContext } from "../core/constants";
 import {
+  ExitToAppRounded,
   HomeRounded,
   LibraryBooksRounded,
   SearchRounded,
@@ -25,8 +26,13 @@ import {
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    background: "pink",
+    background: `linear-gradient(135deg, ${theme.palette.secondary[100]}, ${theme.palette.secondary[200]},  ${theme.palette.secondary[200]})`,
     minWidth: 400,
+  },
+  navBarLinks: {
+    display: "flex",
+    flexGrow: 1,
+    justifyContent: "space-around",
   },
   drawerHeader: {
     color: "white",
@@ -34,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
   },
   drawerIcon: {
     color: "white",
-    fontSize: 50,
+    fontSize: 48,
     paddingRight: 10,
   },
   drawerLink: {
@@ -121,19 +127,15 @@ function NavBar() {
 
   return (
     <Box component="nav">
-      <AppBar
-        position="static"
-        style={{ background: "#2196f3", marginBottom: 20 }}
-      >
-        <Toolbar style={{ justifyContent: "space-between", paddingLeft: 300 }}>
-          <NabBarLink to="/" text="Home" />
-          <NabBarLink to="/Checkouts" text="Checkouts" />
-          <NabBarLink to="/Account" text="Account" />
-          <IconButton
-            style={{ justifyContent: "end" }}
-            onClick={() => setOpen(true)}
-            color="inherit"
-          >
+      <AppBar position="static">
+        <Toolbar>
+          <Box className={styles.navBarLinks}>
+            <NabBarLink to="/" text="Home" />
+            <NabBarLink to="/Checkouts" text="Checkouts" />
+            <NabBarLink to="/Account" text="Account" />
+          </Box>
+
+          <IconButton edge="end" onClick={() => setOpen(true)} color="inherit">
             <MenuIcon />
           </IconButton>
           <Drawer
@@ -149,12 +151,17 @@ function NavBar() {
             >
               Welcome {`${account.firstName} ${account.lastName}`}
             </Typography>
-            <List style={{ backgroundColor: "pink" }}>
+            <List>
               {drawerItems.map((item, index) => (
                 <DrawerItem {...item} key={index} className={styles.drawItem} />
               ))}
             </List>
-            <Button size="large" className={styles.signOut} onClick={signOut}>
+            <Button
+              size="large"
+              startIcon={<ExitToAppRounded />}
+              className={styles.signOut}
+              onClick={signOut}
+            >
               Sign Out
             </Button>
           </Drawer>
