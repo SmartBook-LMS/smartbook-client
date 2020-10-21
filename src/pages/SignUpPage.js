@@ -5,7 +5,6 @@ import {
   Container,
   Avatar,
   TextField,
-  Link,
   useTheme,
   Box,
   FormControlLabel,
@@ -17,6 +16,7 @@ import DateFnsUtils from "@date-io/date-fns"; // import
 import { BookOutlined } from "@material-ui/icons";
 import { AuthContext } from "../core/constants";
 import { CreateUser, convertSQLAccount } from "../core/requests";
+import { Link } from "react-router-dom";
 
 const formErrors = {
   firstName: "First name cannot be empty",
@@ -180,9 +180,7 @@ function SignUpPage() {
               Sign Up
             </Button>
             <Box marginY={2}>
-              <Link href="/SignIn" variant="body2">
-                Already have an account? Sign in
-              </Link>
+              <Link to="/SignIn">Already have an account? Sign in</Link>
             </Box>
           </form>
         </div>

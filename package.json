@@ -14,6 +14,7 @@
     "bootstrap": "^4.5.2",
     "date-fns": "^2.16.1",
     "form-control-react": "^1.0.9",
+    "material-table": "^1.69.1",
     "material-ui-search-bar": "^1.0.0",
     "materialize-css": "^1.0.0-rc.2",
     "react": "^16.13.1",
