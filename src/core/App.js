@@ -76,7 +76,7 @@ function App() {
             <GuardedRoute
               path="/Search"
               component={SearchPage}
-              auth={!hasAuth}
+              auth={hasAuth}
             />
             <GuardedRoute
               path="/SignUp"

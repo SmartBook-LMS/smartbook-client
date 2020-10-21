@@ -15,69 +15,64 @@ function SearchPage() {
 
   const columns = [
     {
-     name: "Media.Title",
-     label: "Title",
-     options: {
-      filter: true,
-      sort: true,
-     }
+      name: "Media.Title",
+      label: "Title",
+      options: {
+        filter: true,
+        sort: true,
+      },
     },
     {
-     name: "Author",
-     label: "Author",
-     options: {
-      filter: true,
-      sort: false,
-     }
+      name: "Author",
+      label: "Author",
+      options: {
+        filter: true,
+        sort: false,
+      },
     },
     {
-     name: "Media.Genre",
-     label: "Genre",
-     options: {
-      filter: true,
-      sort: false,
-     }
+      name: "Media.Genre",
+      label: "Genre",
+      options: {
+        filter: true,
+        sort: false,
+      },
     },
     {
-     name: "ISBN",
-     label: "ISBN",
-     options: {
-      filter: true,
-      sort: false,
-     }
+      name: "ISBN",
+      label: "ISBN",
+      options: {
+        filter: true,
+        sort: false,
+      },
     },
-   ];
+  ];
 
   const options = {
     filter: true,
-    filterType: 'dropdown',
-    responsive: 'vertical',
+    filterType: "dropdown",
+    responsive: "vertical",
     selectableRows: false,
-    enableNestedDataAccess: '.', // allows nested data separated by "." (see column names and the data structure above)
+    enableNestedDataAccess: ".", // allows nested data separated by "." (see column names and the data structure above)
   };
 
   const myTheme = createMuiTheme({
     overrides: {
       MUIDataTable: {
         responsiveScroll: {
-          maxHeight: "580px"
-          // overflowY: 'scroll',
-        }
-      }
-    }
+          maxHeight: "580px",
+        },
+      },
+    },
   });
 
   return (
-    <dev>
+    <div>
       <NavBar />
       <MuiThemeProvider theme={myTheme}>
-        <MUIDataTable
-          data={data}
-          columns={columns}
-          options={options}
-        />
+        <MUIDataTable data={data} columns={columns} options={options} />
       </MuiThemeProvider>
-    </dev>
+    </div>
   );
 }
 
