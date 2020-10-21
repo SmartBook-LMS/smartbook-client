@@ -7,7 +7,6 @@ import {
   Grid,
   Avatar,
   TextField,
-  Link,
   useTheme,
   FormControlLabel,
   Checkbox,
@@ -16,6 +15,7 @@ import { AuthContext } from "../core/constants";
 import { useForm } from "react-hook-form";
 import { BookOutlined } from "@material-ui/icons";
 import { LoginUser, convertSQLAccount } from "../core/requests";
+import { Link } from "react-router-dom";
 
 const formErrors = {
   username: "Username cannot be empty",
@@ -117,9 +117,7 @@ function SignInPage() {
           <Box mt={2}></Box>
           <Grid container>
             <Grid item>
-              <Link href="/SignUp" variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link>
+              <Link to="/SignUp">{"Don't have an account? Sign Up"}</Link>
             </Grid>
           </Grid>
         </form>
