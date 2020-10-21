@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export const useProduction = false;
+export const useProduction = true;
 
 export const baseURL = useProduction
   ? "https://backend-dot-smartbook-lms.uc.r.appspot.com/"
