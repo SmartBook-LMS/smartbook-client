@@ -4,10 +4,14 @@ const endpoints = {
   userInfo: "user-info/",
   loginUser: "login-user/",
   createUser: "create-user/",
+  bookInfo: "get-books/",
+
+  title: "title/",
 };
 
 const errors = {
   unauthorized: new Error("Unauthorized"),
+  notexist: Error("Not Exsit"),
 };
 
 export const convertSQLAccount = (sqlAccount) => {
@@ -62,4 +66,18 @@ export const GetUserInfo = async (token) => {
   } catch (e) {
     throw e;
   }
+};
+
+export const GetBookInfo = async (credentials) => {
+  const header = {
+    "Content-Type": "application/json",
+  };
+
+  const tokenResponse = await fetch(`${baseURL}${endpoints.bookInfo}`, {
+    method: "POST",
+    body: JSON.stringify(credentials),
+    headers: header,
+  });
+
+  return await tokenResponse.json();
 };

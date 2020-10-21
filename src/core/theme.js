@@ -38,11 +38,17 @@ const theme = createMuiTheme({
     backgroundColor: "pink",
   },
   paper: {
-    // textAlign: 'center',
     marginTop: 100,
   },
   submit: {
     marginTop: 30,
+  },
+  table: {
+    minWidth: 650,
+  },
+  searchpaper: {
+    padding: 50,
+    marginTop: 20,
   },
 });
 
