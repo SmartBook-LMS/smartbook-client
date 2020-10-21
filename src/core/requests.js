@@ -4,6 +4,7 @@ const endpoints = {
   userInfo: "user-info/",
   loginUser: "login-user/",
   createUser: "create-user/",
+  getBook: "get-books/",
 };
 
 const errors = {
@@ -59,6 +60,25 @@ export const GetUserInfo = async (token) => {
     if (dataResponseJson.status === "success") {
       return convertSQLAccount(dataResponseJson.account);
     }
+  } catch (e) {
+    throw e;
+  }
+};
+
+export const GetBookInfo = async (token) => {
+  // const headers = {
+  //   Authorization: `Token ${token}`,
+  // };
+  try {
+    const dataResponse = await fetch(`${baseURL}${endpoints.getBook}`, {});
+    // if (dataResponse.status === 401) {
+    //   throw errors.unauthorized;
+    // }
+    const dataResponseJson = await dataResponse.json();
+    // if (dataResponseJson.status === "success") {
+    //   return convertSQLAccount(dataResponseJson.account);
+    // }
+    return dataResponseJson;
   } catch (e) {
     throw e;
   }
