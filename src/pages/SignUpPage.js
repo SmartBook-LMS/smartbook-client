@@ -35,10 +35,14 @@ function SignUpPage() {
   // Hook into form validation
   const { setAuthToken, setAccount } = useContext(AuthContext);
   const onSubmit = async (formData) => {
+    const { birthdate } = formData;
+    const birthdateString = `${birthdate.getFullYear()}-${
+      birthdate.getMonth() + 1
+    }-${birthdate.getDate()}`;
     const user = {
       ...formData,
+      birthdate: birthdateString,
     };
-
     const response = await CreateUser(user);
 
     if (response.status === "error") {
@@ -115,7 +119,7 @@ function SignUpPage() {
                   setSelectedDate(selected);
                   return selected;
                 }}
-                name="birthday"
+                name="birthdate"
                 label="Birthday"
                 clearable
                 defaultValue={null}
