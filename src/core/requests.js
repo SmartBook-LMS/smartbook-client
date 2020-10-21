@@ -9,6 +9,7 @@ const endpoints = {
 
 const errors = {
   unauthorized: new Error("Unauthorized"),
+  notexist: Error("Not Exsit"),
 };
 
 export const convertSQLAccount = (sqlAccount) => {
