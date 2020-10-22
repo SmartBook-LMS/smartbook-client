@@ -18,9 +18,12 @@ import MenuIcon from "@material-ui/icons/Menu";
 import AccountCircleRoundedIcon from "@material-ui/icons/AccountCircleRounded";
 import { AuthContext } from "../core/constants";
 import {
+  AttachMoneyRounded,
   ExitToAppRounded,
   HomeRounded,
   LibraryBooksRounded,
+  PeopleRounded,
+  PostAddRounded,
   SearchRounded,
 } from "@material-ui/icons";
 
@@ -98,7 +101,7 @@ function NavBar() {
   const { signOut, account } = useContext(AuthContext);
   const [open, setOpen] = useState(false);
 
-  const drawerItems = [
+  let drawerItems = [
     {
       icon: <HomeRounded className={styles.drawerIcon} />,
       text: "Home",
@@ -124,6 +127,31 @@ function NavBar() {
       onClick: () => setOpen(false),
     },
   ];
+
+  const librarianDrawerItems = [
+    {
+      icon: <PeopleRounded className={styles.drawerIcon} />,
+      text: "View Patrons",
+      to: "/",
+      onClick: () => setOpen(false),
+    },
+    {
+      icon: <AttachMoneyRounded className={styles.drawerIcon} />,
+      text: "View Fines",
+      to: "/",
+      onClick: () => setOpen(false),
+    },
+    {
+      icon: <PostAddRounded className={styles.drawerIcon} />,
+      text: "Manage Catalog",
+      to: "/",
+      onClick: () => setOpen(false),
+    },
+  ];
+
+  if (account.librarian) {
+    drawerItems = [...drawerItems, ...librarianDrawerItems];
+  }
 
   return (
     <Box component="nav">
