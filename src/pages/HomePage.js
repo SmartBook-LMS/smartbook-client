@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import { Select, MenuItem, InputLabel, Box } from "@material-ui/core";
+import { Select, MenuItem, InputLabel, Box, } from "@material-ui/core";
 import SearchBar from "material-ui-search-bar";
 import NavBar from "../components/NavBar";
 import Header from "../components/Header";
+import Skeleton from '@material-ui/lab/Skeleton';
+
 
 function HomePage() {
   const [type, setType] = useState(1);
@@ -17,20 +19,22 @@ function HomePage() {
     setOpen(true);
   };
 
+  
+  //    <Box height={1000} style={{background: 'linear-gradient(to right bottom, #00e5ff 10%, #18ffff, #e1f5fe)'}}> 
+//    <Box height={1000} style={{background: 'linear-gradient(#29b6f6, #84ffff, #e1f5fe)'}}> 
+//    <Box height={1000} style={{background: 'linear-gradient(#6EBFF3, #95E0F1, #A1EAF0, #D8F2F5, #E8F2F8)'}}> 
+
   return (
-    <Box>
+    <Box height={1000} style={{background: 'linear-gradient(#6EBFF3, #95E0F1, #A1EAF0, #D8F2F5, #E8F2F8)'}}> 
       <NavBar />
       <Header />
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          marginTop: 250,
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <InputLabel
+      <Skeleton style={{marginTop: 200}}/>
+      <Skeleton animation={false} />
+      <Skeleton animation="wave" />
+
+
+      
+        {/*<InputLabel
           id="demo-controlled-open-select-label"
           style={{ marginRight: 20 }}
         >
@@ -59,7 +63,7 @@ function HomePage() {
           onRequestSearch={() => console.log("onRequestSearch")}
           style={{ width: 400 }}
         />
-      </div>
+      </div>*/}
     </Box>
   );
 }

@@ -30,11 +30,13 @@ import {
 const useStyles = makeStyles((theme) => ({
   paper: {
     background: `linear-gradient(135deg, ${theme.palette.secondary[100]}, ${theme.palette.secondary[200]},  ${theme.palette.secondary[200]})`,
+    //background: 'lightgrey',
     minWidth: 400,
   },
   navBarLinks: {
     display: "flex",
     flexGrow: 1,
+    color: "pink",
     justifyContent: "space-around",
   },
   drawerHeader: {
@@ -51,6 +53,7 @@ const useStyles = makeStyles((theme) => ({
   },
   drawerText: {
     color: "white",
+    fontSize: 30
   },
   drawerItem: {
     paddingTop: 16,
@@ -177,7 +180,7 @@ function NavBar() {
               align="center"
               className={styles.drawerHeader}
             >
-              Welcome {`${account.firstName} ${account.lastName}`}
+              Welcome! {`${account.firstName} ${account.lastName}`}
             </Typography>
             <List>
               {drawerItems.map((item, index) => (

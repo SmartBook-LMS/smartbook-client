@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, Paper, Typography } from "@material-ui/core";
+import { Grid, Paper, Typography, Box } from "@material-ui/core";
 import NavBar from "../components/NavBar";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -35,8 +35,8 @@ function CheckoutsPage() {
 
   const classes = useStyles();
   return (
-    <div>
-      <NavBar />
+    <Box height={1000} style={{background: 'linear-gradient(#6EBFF3, #95E0F1, #A1EAF0, #D8F2F5, #E8F2F8)'}}> 
+    <NavBar />
       <div className={classes.root}>
         <Grid container spacing={10}>
           <Grid item xs={6}>
@@ -131,7 +131,7 @@ function CheckoutsPage() {
           </Grid>
         </Grid>
       </div>
-    </div>
+    </Box>
   );
 }
 

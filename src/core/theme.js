@@ -1,10 +1,11 @@
 import { createMuiTheme } from "@material-ui/core";
-import { blue, pink } from "@material-ui/core/colors";
+import { blue, pink, cyan } from "@material-ui/core/colors";
 
 const theme = createMuiTheme({
   palette: {
-    primary: blue,
-    secondary: pink,
+    //primary: {main: "#29b6f6"},
+    primary: {main: "#4fc3f7"},
+    secondary: cyan,
     marginTop: 100,
     color: "black",
     backgroundColor: "lightgrey",
@@ -50,6 +51,9 @@ const theme = createMuiTheme({
     padding: 50,
     marginTop: 20,
   },
+  backgroundContainer: {
+    background: 'linear-gradient(#6EBFF3, #95E0F1, #A1EAF0, #D8F2F5, #E8F2F8)',
+  }
 });
 
 export default theme;
