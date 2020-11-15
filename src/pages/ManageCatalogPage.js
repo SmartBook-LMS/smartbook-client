@@ -14,12 +14,11 @@ import NavBar from "../components/NavBar";
 import { AuthContext } from "../core/constants";
 import { CreateMedia } from "../core/requests";
 
-const ReactHookFormSelect = ({
+const FormSelect = ({
   name,
   label,
   control,
   defaultValue,
-  onSelect,
   children,
   ...props
 }) => {
@@ -29,7 +28,7 @@ const ReactHookFormSelect = ({
       <InputLabel id={labelId}>{label}</InputLabel>
       <Controller
         as={
-          <Select labelId={labelId} label={label} onSelect={onSelect}>
+          <Select labelId={labelId} label={label}>
             {children}
           </Select>
         }
@@ -42,22 +41,32 @@ const ReactHookFormSelect = ({
 };
 
 const ratings = ["G", "PG", "PG-13", "R"];
-const genres = [
-  "Action",
-  "Horror",
-  "Fantasy",
-  "Thriller",
-  "Sci-Fi",
-  "Historical Fiction",
-  "Romantic Comedy",
-  "Mystery",
-  "Western",
-  "Classical",
-  "Jazz",
-  "Rock",
-  "Rap",
-  "Pop",
-];
+
+const genres = {
+  book: [
+    "Action",
+    "Horror",
+    "Fantasy",
+    "Thriller",
+    "Sci-Fi",
+    "Historical Fiction",
+    "Romantic Comedy",
+    "Mystery",
+    "Western",
+  ],
+  movie: [
+    "Action",
+    "Horror",
+    "Fantasy",
+    "Thriller",
+    "Sci-Fi",
+    "Historical Fiction",
+    "Romantic Comedy",
+    "Mystery",
+    "Western",
+  ],
+  music: ["Classical", "Jazz", "Rock", "Rap", "Pop"],
+};
 
 const formErrors = {
   title: "Title cannot be empty",
@@ -70,43 +79,45 @@ const formErrors = {
 };
 
 const ManageCatalogPage = () => {
-  const { authToken } = useContext(AuthContext);
-  const { register, handleSubmit, control, watch, errors } = useForm();
-  console.log(errors);
-  const onSubmit = async (formData) => {
-    console.log(formData);
-  };
+  // Setup form
+  const {
+    control,
+    errors,
+    handleSubmit,
+    register,
+    reset,
+    setValue,
+    watch,
+  } = useForm();
+
+  // Watch for changes in media type to update form rendering
   const selectMediaType = watch("mediaType", "book");
-  console.log(selectMediaType);
-  const mediaData = {
-    mediaType: "book",
-    title: "New Book",
-    genre: "Action",
-    description: "Just a new book",
-    author: "Daniel",
-    ISBN: "1234",
+  if (selectMediaType === "music") {
+    setValue("genre", genres[selectMediaType][0]);
+  }
+
+  // Create a call to get the form values
+  const { authToken } = useContext(AuthContext);
+  const onSubmit = async (formData) => {
+    formData.copies = parseInt(formData.copies);
+    await CreateMedia(authToken, formData);
+    reset();
+    setValue("genre", genres["book"][0]);
   };
+
   return (
     <div>
       <NavBar />
-      <Button
-        onClick={async () => {
-          await CreateMedia(authToken, mediaData);
-        }}
-      >
-        Submit
-      </Button>
       <Container maxWidth="sm">
         <form noValidate onSubmit={handleSubmit(onSubmit)}>
           <Grid container spacing={1}>
             <Grid item xs={6}>
-              <ReactHookFormSelect
+              <FormSelect
                 id="mediaType"
                 name="mediaType"
                 label="Media Type"
                 control={control}
-                defaultValue="book"
-                onSelect={(val) => console.log(val)}
+                defaultValue={selectMediaType}
                 variant="outlined"
                 margin="normal"
                 fullWidth
@@ -114,25 +125,25 @@ const ManageCatalogPage = () => {
                 <MenuItem value="book">Book</MenuItem>
                 <MenuItem value="movie">Movie</MenuItem>
                 <MenuItem value="music">Music</MenuItem>
-              </ReactHookFormSelect>
+              </FormSelect>
             </Grid>
             <Grid item xs={6}>
-              <ReactHookFormSelect
+              <FormSelect
                 id="genre"
                 name="genre"
                 label="Genre"
                 control={control}
-                defaultValue="Action"
+                defaultValue={genres[selectMediaType][0]}
                 variant="outlined"
                 margin="normal"
                 fullWidth
               >
-                {genres.map((genre, index) => (
+                {genres[selectMediaType].map((genre, index) => (
                   <MenuItem key={index} value={genre}>
                     {genre}
                   </MenuItem>
                 ))}
-              </ReactHookFormSelect>
+              </FormSelect>
             </Grid>
             <Grid item xs={12}>
               <TextField
@@ -161,7 +172,6 @@ const ManageCatalogPage = () => {
                 error={errors.description != null}
                 helperText={errors.description ? formErrors.description : ""}
                 inputRef={register({ required: true, minLength: 1 })}
-                autoFocus
               />
             </Grid>
             {selectMediaType === "book" && (
@@ -192,7 +202,6 @@ const ManageCatalogPage = () => {
                     error={errors.ISBN != null}
                     helperText={errors.ISBN ? formErrors.ISBN : ""}
                     inputRef={register({ required: true, minLength: 1 })}
-                    autoFocus
                   />
                 </Grid>
               </>
@@ -214,7 +223,7 @@ const ManageCatalogPage = () => {
                   />
                 </Grid>
                 <Grid item xs={6}>
-                  <ReactHookFormSelect
+                  <FormSelect
                     id="rating"
                     name="rating"
                     label="Rating"
@@ -229,27 +238,25 @@ const ManageCatalogPage = () => {
                         {rating}
                       </MenuItem>
                     ))}
-                  </ReactHookFormSelect>
+                  </FormSelect>
                 </Grid>
               </>
             )}
             {selectMediaType === "music" && (
-              <>
-                <Grid item xs={12}>
-                  <TextField
-                    variant="outlined"
-                    margin="normal"
-                    required
-                    fullWidth
-                    name="artist"
-                    label="Artist"
-                    id="artist"
-                    error={errors.artist != null}
-                    helperText={errors.artist ? formErrors.artist : ""}
-                    inputRef={register({ required: true, minLength: 1 })}
-                  />
-                </Grid>
-              </>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  name="artist"
+                  label="Artist"
+                  id="artist"
+                  error={errors.artist != null}
+                  helperText={errors.artist ? formErrors.artist : ""}
+                  inputRef={register({ required: true, minLength: 1 })}
+                />
+              </Grid>
             )}
             <Grid item xs={12}>
               <TextField
@@ -267,7 +274,7 @@ const ManageCatalogPage = () => {
               />
             </Grid>
             <Button type="submit" fullWidth variant="contained" color="primary">
-              Sign In
+              Add Media
             </Button>
           </Grid>
         </form>
