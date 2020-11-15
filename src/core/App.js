@@ -16,6 +16,7 @@ import {
 } from "../pages";
 
 import { GetUserInfo } from "./requests";
+import ManageCatalogPage from "../pages/ManageCatalogPage";
 
 function App() {
   const [authToken, setAuthToken] = useState("");
@@ -76,6 +77,11 @@ function App() {
             <GuardedRoute
               path="/Search"
               component={SearchPage}
+              auth={hasAuth}
+            />
+            <GuardedRoute
+              path="/ManageCatalog"
+              component={ManageCatalogPage}
               auth={hasAuth}
             />
             <GuardedRoute

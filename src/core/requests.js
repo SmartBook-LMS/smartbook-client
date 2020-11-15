@@ -5,6 +5,7 @@ const endpoints = {
   loginUser: "login-user/",
   createUser: "create-user/",
   getBook: "get-books/",
+  createMedia: "create-media/",
 };
 
 const errors = {
@@ -79,6 +80,28 @@ export const GetBookInfo = async (token) => {
     // if (dataResponseJson.status === "success") {
     //   return convertSQLAccount(dataResponseJson.account);
     // }
+    return dataResponseJson;
+  } catch (e) {
+    throw e;
+  }
+};
+
+export const CreateMedia = async (token, mediaData) => {
+  const tokenHeader = {
+    Authorization: `Token ${token}`,
+    "Content-Type": "application/json",
+  };
+  try {
+    const dataResponse = await fetch(`${baseURL}${endpoints.createMedia}`, {
+      method: "POST",
+      body: JSON.stringify(mediaData),
+      headers: tokenHeader,
+    });
+    // if (dataResponse.status === 401) {
+    //   throw errors.unauthorized;
+    // }
+    const dataResponseJson = await dataResponse.json();
+
     return dataResponseJson;
   } catch (e) {
     throw e;
