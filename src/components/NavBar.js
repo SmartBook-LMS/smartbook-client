@@ -147,7 +147,7 @@ function NavBar() {
     {
       icon: <PostAddRounded className={styles.drawerIcon} />,
       text: "Manage Catalog",
-      to: "/",
+      to: "/ManageCatalog",
       onClick: () => setOpen(false),
     },
   ];
