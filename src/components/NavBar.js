@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
   },
   drawerText: {
     color: "white",
-    fontSize: 30
+    fontSize: 30,
   },
   drawerItem: {
     paddingTop: 16,
@@ -124,6 +124,12 @@ function NavBar() {
       onClick: () => setOpen(false),
     },
     {
+      icon: <AttachMoneyRounded className={styles.drawerIcon} />,
+      text: "View Fines",
+      to: "/Fines",
+      onClick: () => setOpen(false),
+    },
+    {
       icon: <AccountCircleRoundedIcon className={styles.drawerIcon} />,
       text: "My Account",
       to: "/Account",
@@ -135,12 +141,6 @@ function NavBar() {
     {
       icon: <PeopleRounded className={styles.drawerIcon} />,
       text: "View Patrons",
-      to: "/",
-      onClick: () => setOpen(false),
-    },
-    {
-      icon: <AttachMoneyRounded className={styles.drawerIcon} />,
-      text: "View Fines",
       to: "/",
       onClick: () => setOpen(false),
     },
