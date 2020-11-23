@@ -17,6 +17,7 @@ import {
 
 import { GetUserInfo } from "./requests";
 import ManageCatalogPage from "../pages/ManageCatalogPage";
+import FinesPage from "../pages/FinesPage";
 
 function App() {
   const [authToken, setAuthToken] = useState("");
@@ -79,6 +80,7 @@ function App() {
               component={SearchPage}
               auth={hasAuth}
             />
+            <GuardedRoute path="/Fines" component={FinesPage} auth={hasAuth} />
             <GuardedRoute
               path="/ManageCatalog"
               component={ManageCatalogPage}
