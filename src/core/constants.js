@@ -14,3 +14,5 @@ export const useConstructor = (callBack = () => {}) => {
 };
 
 export const AuthContext = React.createContext({});
+export const BagContext = React.createContext({});
+
