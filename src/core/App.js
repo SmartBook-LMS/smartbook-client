@@ -23,7 +23,11 @@ import BagPage from "../pages/BagPage";
 function App() {
   const [authToken, setAuthToken] = useState("");
   const [account, setAccount] = useState({});
-  const [checkouts, setCheckouts] = useState([]);
+  const [checkouts, setCheckouts] = useState([
+    { mediaType: "book", title: "Test", copyID: 1 },
+    { mediaType: "movie", title: "Test2", copyID: 2 },
+    { mediaType: "music", title: "Test3", copyID: 3 },
+  ]);
   const [loading, setLoading] = useState(true);
 
   useConstructor(async () => {
@@ -63,9 +67,13 @@ function App() {
     addItem: (item) =>
       checkouts.includes(item) ? setCheckouts([...checkouts, item]) : null,
     removeItem: (item) => {
-      const index = checkouts.findIndex(item);
-      if (index) {
+      const index = checkouts.findIndex(
+        (media) => media.copyID === item.copyID
+      );
+
+      if (index >= 0) {
         checkouts.splice(index, 1);
+        console.log(checkouts);
         setCheckouts([...checkouts]);
       }
     },
