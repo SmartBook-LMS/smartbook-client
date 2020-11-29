@@ -1,9 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import NavBar from "../components/NavBar";
-import MUIDataTable from "mui-datatables";
-import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
-import { GetBookInfo } from "../core/requests";
-import { useConstructor } from "../core/constants";
+import axios from 'axios';
+
 import {
   Box,
   Button,
@@ -25,6 +23,12 @@ import {
   Typography,
 } from "@material-ui/core";
 
+const data = [
+  { title: "Test", genre: " Test", description: "Test", isbn: "1233"},
+  { title: "Test2", genre: " Test2", description: "Test2" },
+  { title: "Test3", genre: " Test3", description: "Test3" },
+];
+
 const mediaFields = ["Title", "Genre", "Description"];
 
 const bookFields = ["Author", "ISBN"];
@@ -33,20 +37,89 @@ const movieFields = ["Director", "Rating"];
 
 const musicFields = ["Artist"];
 
-const data = [
-  { title: "Test", genre: " Test", description: "Test" },
-  { title: "Test2", genre: " Test2", description: "Test2" },
-  { title: "Test3", genre: " Test3", description: "Test3" },
-];
-
 function SearchPage() {
   const [searchResults, setSearchResults] = useState(data);
+  const [origData, setOrigData] = useState([]);
+  const [listFilter, setListFilter] = useState([]);
 
-  useConstructor(async () => {
-    // const bookData = await GetBookInfo();
-  });
+  const getData = async () => {
 
-  const onSearch = async () => {};
+    const response = await axios.get('http://127.0.0.1:8000/get-books/');
+
+    const test = response.data.map(x => {
+      const y = {...x, ...x.Media};
+      delete y.Media;
+      return y;
+    });
+
+    setSearchResults(test)
+    setOrigData(test);    
+    setListFilter(test);
+  }
+
+  useEffect(() => {
+    getData()
+  }, [])
+
+
+  const onSearch = async () => {
+    const result = [];
+    const regex = RegExp(searchText, 'i');
+
+    //No Search Tag
+    if (searchTags.length == 0) {
+      if (searchField === "Title") {
+        listFilter.filter(obj =>
+          regex.test(obj.Title)).map(x => {
+            result.push(x);
+        })
+    
+      } else if (searchField === "Genre") {
+        listFilter.filter(obj =>
+          regex.test(obj.Genre)).map(x => {
+            result.push(x);
+        })
+      } else {
+        listFilter.filter(obj =>
+          regex.test(obj.Description)).map(x => {
+            result.push(x);
+        })
+      }
+      setSearchResults(result);  
+    }
+    //Search Tag exists 
+    else {
+      for (let i = 0; i < searchTags.length; i++) {
+        const regex = RegExp(searchTags[i].value, 'i');
+        const field = searchTags[i].searchField;
+        const result = [];
+
+        if (field === "Title") {
+          listFilter.filter(obj =>
+            regex.test(obj.Title)).map(x => {
+              result.push(x);
+          })
+          setListFilter(result);
+      
+        } else if (field === "Genre") {
+          listFilter.filter(obj =>
+            regex.test(obj.Genre)).map(x => {
+              result.push(x);
+          })
+          setListFilter(result);
+
+        } else {
+          listFilter.filter(obj =>
+            regex.test(obj.Description)).map(x => {
+              result.push(x);
+          })
+          setListFilter(result);
+        }
+        setSearchResults(result);  
+      }
+    }
+    setListFilter(origData);
+  };
 
   const [searchTags, setSearchTags] = useState([]);
   const [searchField, setSearchField] = useState("Title");
@@ -66,10 +139,19 @@ function SearchPage() {
 
   const [mediaType, setMediaType] = useState("all");
   const onSelectMediaType = ({ target: { value } }) => {
+     const result = [];
+     if (value != "all") {
+       listFilter.filter(obj => obj.Media_Type == value).map(x => {result.push(x)})
+       setSearchResults(result);
+     }
+     else {
+       setSearchResults(origData);
+     }
     setMediaType(value);
     setSearchField("Title");
     setSearchText("");
     setSearchTags([]);
+    setListFilter(origData);
   };
 
   let fields = mediaFields;
@@ -169,7 +251,6 @@ function SearchPage() {
       <Container maxWidth="md">
         <TableContainer component={Paper} style={{ margin: 32, padding: 32 }}>
           <Typography variant="h6">Search Results</Typography>
-
           <Table>
             <TableHead>
               <TableRow>
@@ -183,7 +264,7 @@ function SearchPage() {
                 <TableRow key={row.name}>
                   {fields.map((field) => (
                     <TableCell scope="row">
-                      {row[field.toLowerCase()]}{" "}
+                      {row[field]}{" "}
                     </TableCell>
                   ))}
                 </TableRow>
