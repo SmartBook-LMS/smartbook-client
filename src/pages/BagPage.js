@@ -10,7 +10,12 @@ import {
   Paper,
   Typography,
 } from "@material-ui/core";
-import { Book, Close, Movie, MusicNote } from "@material-ui/icons";
+import {
+  Close,
+  LibraryBooksRounded,
+  LibraryMusicRounded,
+  VideoLibraryRounded,
+} from "@material-ui/icons";
 import React, { useContext } from "react";
 import NavBar from "../components/NavBar";
 import { BagContext } from "../core/constants";
@@ -32,9 +37,9 @@ function BagPage() {
             {checkouts.map((item) => (
               <ListItem>
                 <ListItemIcon>
-                  {item.mediaType === "book" && <Book />}
-                  {item.mediaType === "music" && <MusicNote />}
-                  {item.mediaType === "movie" && <Movie />}
+                  {item.mediaType === "book" && <LibraryBooksRounded />}
+                  {item.mediaType === "music" && <LibraryMusicRounded />}
+                  {item.mediaType === "movie" && <VideoLibraryRounded />}
                 </ListItemIcon>
                 <ListItemText primary={item.title} />
                 <ListItemSecondaryAction>
