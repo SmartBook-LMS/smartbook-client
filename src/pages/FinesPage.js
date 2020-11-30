@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import NavBar from "../components/NavBar";
 import {
   Box,
@@ -13,7 +13,8 @@ import {
   Paper,
   Typography,
 } from "@material-ui/core";
-import { useConstructor } from "../core/constants";
+import { AuthContext, useConstructor } from "../core/constants";
+import { PayFines } from "../core/requests";
 
 function toDollarStr(num) {
   return `$${(Math.round(num * 100) / 100).toFixed(2)}`;
@@ -26,6 +27,7 @@ function toDateStr(date) {
 function FinesPage() {
   const [loading, setLoading] = useState(false);
   const [fines, setFines] = useState([]);
+  const { authToken, account } = useContext(AuthContext);
 
   const getFineData = async () => {
     setLoading(true);
@@ -54,6 +56,7 @@ function FinesPage() {
 
   const payFines = async (amount) => {
     //   TODO: Call server to pay fines off
+    await PayFines(authToken, account.username);
     setFines([]);
     await getFineData();
   };
