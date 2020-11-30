@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import {
   AppBar,
   Toolbar,
@@ -13,15 +13,17 @@ import {
   ListItem,
   makeStyles,
   Typography,
+  Badge,
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import AccountCircleRoundedIcon from "@material-ui/icons/AccountCircleRounded";
-import { AuthContext } from "../core/constants";
+import { AuthContext, BagContext } from "../core/constants";
 import {
   AttachMoneyRounded,
   ExitToAppRounded,
   HomeRounded,
   LibraryBooksRounded,
+  LocalMall,
   PeopleRounded,
   PostAddRounded,
   SearchRounded,
@@ -155,7 +157,8 @@ function NavBar() {
   if (account.librarian) {
     drawerItems = [...drawerItems, ...librarianDrawerItems];
   }
-
+  const history = useHistory();
+  const { numItems } = useContext(BagContext);
   return (
     <Box component="nav">
       <AppBar position="static">
@@ -165,8 +168,13 @@ function NavBar() {
             <NabBarLink to="/Checkouts" text="Checkouts" />
             <NabBarLink to="/Account" text="Account" />
           </Box>
+          <IconButton onClick={() => history.push("/MyBag")} color="default">
+            <Badge badgeContent={numItems} color="secondary">
+              <LocalMall />
+            </Badge>
+          </IconButton>
 
-          <IconButton edge="end" onClick={() => setOpen(true)} color="inherit">
+          <IconButton edge="end" onClick={() => setOpen(true)} color="default">
             <MenuIcon />
           </IconButton>
           <Drawer
