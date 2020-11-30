@@ -6,6 +6,7 @@ const endpoints = {
   createUser: "create-user/",
   getBook: "get-books/",
   createMedia: "create-media/",
+  payFines: "pay-fines/"
 };
 
 const errors = {
@@ -102,6 +103,24 @@ export const CreateMedia = async (token, mediaData) => {
     // }
     const dataResponseJson = await dataResponse.json();
 
+    return dataResponseJson;
+  } catch (e) {
+    throw e;
+  }
+};
+
+export const PayFines = async (token, username) => {
+  const tokenHeader = {
+    Authorization: `Token ${token}`,
+    "Content-Type": "application/json",
+  };
+  try {
+    const dataResponse = await fetch(`${baseURL}${endpoints.payFines}`, {
+      method: "POST",
+      body: JSON.stringify({ token, username }),
+      headers: tokenHeader,
+    });
+    const dataResponseJson = await dataResponse.json();
     return dataResponseJson;
   } catch (e) {
     throw e;
