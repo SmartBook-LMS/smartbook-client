@@ -19,11 +19,12 @@ import MenuIcon from "@material-ui/icons/Menu";
 import AccountCircleRoundedIcon from "@material-ui/icons/AccountCircleRounded";
 import { AuthContext, BagContext } from "../core/constants";
 import {
+  AssignmentReturnRounded,
   AttachMoneyRounded,
   ExitToAppRounded,
   HomeRounded,
   LibraryBooksRounded,
-  LocalMall,
+  LocalMallRounded,
   PeopleRounded,
   PostAddRounded,
   SearchRounded,
@@ -168,12 +169,14 @@ function NavBar() {
             <NabBarLink to="/Checkouts" text="Checkouts" />
             <NabBarLink to="/Account" text="Account" />
           </Box>
+          <IconButton onClick={() => history.push("/Returns")} color="default">
+            <AssignmentReturnRounded />
+          </IconButton>
           <IconButton onClick={() => history.push("/MyBag")} color="default">
             <Badge badgeContent={numItems} color="secondary">
-              <LocalMall />
+              <LocalMallRounded />
             </Badge>
           </IconButton>
-
           <IconButton edge="end" onClick={() => setOpen(true)} color="default">
             <MenuIcon />
           </IconButton>
