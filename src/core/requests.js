@@ -6,7 +6,8 @@ const endpoints = {
   createUser: "create-user/",
   getBook: "get-books/",
   createMedia: "create-media/",
-  payFines: "pay-fines/"
+  fines: "fines/",
+  checkouts: "checkouts/",
 };
 
 const errors = {
@@ -109,15 +110,29 @@ export const CreateMedia = async (token, mediaData) => {
   }
 };
 
-export const PayFines = async (token, username) => {
+export const PayFines = async (token) => {
   const tokenHeader = {
     Authorization: `Token ${token}`,
-    "Content-Type": "application/json",
   };
   try {
-    const dataResponse = await fetch(`${baseURL}${endpoints.payFines}`, {
+    const dataResponse = await fetch(`${baseURL}${endpoints.fines}`, {
       method: "POST",
-      body: JSON.stringify({ token, username }),
+      headers: tokenHeader,
+    });
+    const dataResponseJson = await dataResponse.json();
+    return dataResponseJson;
+  } catch (e) {
+    throw e;
+  }
+};
+
+export const GetCheckouts = async (token) => {
+  const tokenHeader = {
+    Authorization: `Token ${token}`,
+  };
+  try {
+    const dataResponse = await fetch(`${baseURL}${endpoints.checkouts}`, {
+      method: "GET",
       headers: tokenHeader,
     });
     const dataResponseJson = await dataResponse.json();
