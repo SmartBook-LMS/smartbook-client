@@ -41,20 +41,48 @@ function SearchPage() {
   const [searchResults, setSearchResults] = useState(data);
   const [origData, setOrigData] = useState([]);
   const [listFilter, setListFilter] = useState([]);
+  const [bookList, setBookList] = useState([]);
+  const [movieList, setMovieList] = useState([]);
+  const [musicList, setMusicList] = useState([]);
 
   const getData = async () => {
-
-    const response = await axios.get('http://127.0.0.1:8000/get-books/');
-
-    const test = response.data.map(x => {
+    const mediaList = [];
+    const responseBook = await axios.get('http://127.0.0.1:8000/get-books/');
+    const booklist = responseBook.data.map(x => {
       const y = {...x, ...x.Media};
       delete y.Media;
       return y;
     });
+    setBookList(booklist);
+    booklist.map(x => {
+      mediaList.push(x);
+    })
 
-    setSearchResults(test)
-    setOrigData(test);    
-    setListFilter(test);
+    const responseMusic = await axios.get('http://127.0.0.1:8000/get-music/');
+      let musiclist = responseMusic.data.map(x => {
+        const y = {...x, ...x.Media};
+        delete y.Media;
+        return y;
+      });
+      setMusicList(musiclist);
+      musiclist.map(x => {
+        mediaList.push(x);
+      })
+
+      const responseMovie = await axios.get('http://127.0.0.1:8000/get-movies/');
+      let movielist = responseMovie.data.map(x => {
+        const y = {...x, ...x.Media};
+        delete y.Media;
+        return y;
+      });
+      setMovieList(movielist);
+      movielist.map(x => {
+        mediaList.push(x);
+      })
+
+    setSearchResults(mediaList)
+    setOrigData(mediaList);    
+    setListFilter(mediaList);
   }
 
   useEffect(() => {
@@ -73,15 +101,39 @@ function SearchPage() {
           regex.test(obj.Title)).map(x => {
             result.push(x);
         })
-    
       } else if (searchField === "Genre") {
         listFilter.filter(obj =>
           regex.test(obj.Genre)).map(x => {
             result.push(x);
         })
-      } else {
+      } else if (searchField === "Description"){
         listFilter.filter(obj =>
           regex.test(obj.Description)).map(x => {
+            result.push(x);
+        })
+      } else if (searchField === "Author"){
+        listFilter.filter(obj =>
+          regex.test(obj.Author)).map(x => {
+            result.push(x);
+        })
+      } else if (searchField === "ISBN"){
+        listFilter.filter(obj =>
+          regex.test(obj.ISBN)).map(x => {
+            result.push(x);
+        })
+      } else if (searchField === "Director"){
+        listFilter.filter(obj =>
+          regex.test(obj.Director)).map(x => {
+            result.push(x);
+        })
+      } else if (searchField === "Rating"){
+        listFilter.filter(obj =>
+          regex.test(obj.Rating)).map(x => {
+            result.push(x);
+        })
+      } else if (searchField === "Artist"){
+        listFilter.filter(obj =>
+          regex.test(obj.Artist)).map(x => {
             result.push(x);
         })
       }
@@ -89,33 +141,69 @@ function SearchPage() {
     }
     //Search Tag exists 
     else {
+      const filterResult = [];
+      listFilter.map(x => {
+        filterResult.push(x);
+      })
       for (let i = 0; i < searchTags.length; i++) {
         const regex = RegExp(searchTags[i].value, 'i');
         const field = searchTags[i].searchField;
         const result = [];
-
+  
         if (field === "Title") {
-          listFilter.filter(obj =>
+          filterResult.filter(obj =>
             regex.test(obj.Title)).map(x => {
               result.push(x);
+              //return result;
           })
-          setListFilter(result);
-      
         } else if (field === "Genre") {
-          listFilter.filter(obj =>
+          filterResult.filter(obj =>
             regex.test(obj.Genre)).map(x => {
               result.push(x);
+              //return result;
           })
-          setListFilter(result);
-
-        } else {
-          listFilter.filter(obj =>
+        } else if (field === "Description"){
+          filterResult.filter(obj =>
             regex.test(obj.Description)).map(x => {
               result.push(x);
+              //return result;
           })
-          setListFilter(result);
+        } else if (field === "Author"){
+          filterResult.filter(obj =>
+            regex.test(obj.Author)).map(x => {
+              result.push(x);
+              //return result;
+          })
+        } else if (field === "ISBN"){
+          filterResult.filter(obj =>
+            regex.test(obj.ISBN)).map(x => {
+              result.push(x);
+              return result;
+          })
+        } else if (field === "Director"){
+          filterResult.filter(obj =>
+            regex.test(obj.Director)).map(x => {
+              result.push(x);
+              return result;
+          })
+        } else if (field === "Rating"){
+          filterResult.filter(obj =>
+            regex.test(obj.Rating)).map(x => {
+              result.push(x);
+              return result;
+          })
+        } else if (field === "Artist"){
+          filterResult.filter(obj =>
+            regex.test(obj.Artist)).map(x => {
+              result.push(x);
+              return result;
+          })
         }
-        setSearchResults(result);  
+        filterResult.splice(0, filterResult.length);
+        result.map(x => {
+          filterResult.push(x);
+        })
+        setSearchResults(filterResult);  
       }
     }
     setListFilter(origData);
@@ -139,19 +227,23 @@ function SearchPage() {
 
   const [mediaType, setMediaType] = useState("all");
   const onSelectMediaType = ({ target: { value } }) => {
-     const result = [];
-     if (value != "all") {
-       listFilter.filter(obj => obj.Media_Type == value).map(x => {result.push(x)})
-       setSearchResults(result);
-     }
-     else {
-       setSearchResults(origData);
-     }
+     if (value === "book") {
+       setSearchResults(bookList);
+       setListFilter(bookList);
+     } else if (value === "movie") {
+      setSearchResults(movieList);
+      setListFilter(movieList);
+    } else if (value === "music") {
+      setSearchResults(musicList);
+      setListFilter(musicList);
+    } else {
+      setSearchResults(origData);
+      setListFilter(origData);
+    }
     setMediaType(value);
     setSearchField("Title");
     setSearchText("");
     setSearchTags([]);
-    setListFilter(origData);
   };
 
   let fields = mediaFields;
