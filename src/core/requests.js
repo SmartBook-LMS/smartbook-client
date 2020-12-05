@@ -122,7 +122,6 @@ export const GetFines = async (token) => {
       headers: tokenHeader,
     });
     const dataResponseJson = await dataResponse.json();
-    console.log(dataResponseJson)
     return dataResponseJson.fines.map((item) => ({
       ...item,
       returnDate: convertSQLDate(item.returnDate),
@@ -159,6 +158,10 @@ export const GetCheckouts = async (token) => {
       headers: tokenHeader,
     });
     const dataResponseJson = await dataResponse.json();
+    dataResponseJson.checkouts = dataResponseJson.checkouts.map((item) => ({
+      ...item,
+      returnDate: convertSQLDate(item.returnDate),
+    }));
     return dataResponseJson;
   } catch (e) {
     throw e;

@@ -7,6 +7,7 @@ import {
   List,
   ListItem,
   ListItemIcon,
+  ListItemSecondaryAction,
   ListItemText,
   Paper,
   Typography,
@@ -20,6 +21,10 @@ import React, { useContext, useState } from "react";
 import NavBar from "../components/NavBar";
 import { AuthContext, useConstructor } from "../core/constants";
 import { GetCheckouts, ReturnItems } from "../core/requests";
+
+function toDateStr(date) {
+  return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+}
 
 function ReturnsPage() {
   const [items, setItems] = useState([]);
@@ -72,6 +77,11 @@ function ReturnsPage() {
                   </Box>
                 </ListItemIcon>
                 <ListItemText primary={item.title} />
+                <ListItemSecondaryAction>
+                  <Typography color="error">
+                    Due on {toDateStr(item.returnDate)}
+                  </Typography>
+                </ListItemSecondaryAction>
               </ListItem>
             ))}
             {items.length === 0 && !loading && (
