@@ -110,6 +110,22 @@ export const CreateMedia = async (token, mediaData) => {
   }
 };
 
+export const GetFines = async (token) => {
+  const tokenHeader = {
+    Authorization: `Token ${token}`,
+  };
+  try {
+    const dataResponse = await fetch(`${baseURL}${endpoints.fines}`, {
+      method: "GET",
+      headers: tokenHeader,
+    });
+    const dataResponseJson = await dataResponse.json();
+    return dataResponseJson;
+  } catch (e) {
+    throw e;
+  }
+};
+
 export const PayFines = async (token) => {
   const tokenHeader = {
     Authorization: `Token ${token}`,

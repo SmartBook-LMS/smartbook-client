@@ -14,7 +14,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import { AuthContext, useConstructor } from "../core/constants";
-import { PayFines } from "../core/requests";
+import { GetFines, PayFines } from "../core/requests";
 
 function toDollarStr(num) {
   return `$${(Math.round(num * 100) / 100).toFixed(2)}`;
@@ -32,15 +32,17 @@ function FinesPage() {
   const getFineData = async () => {
     setLoading(true);
     // TODO: Add actual loading code
-    setTimeout(() => {
-      setFines([
-        { title: "First", fine: 10, dueDate: new Date() },
-        { title: "Middle", fine: 5, dueDate: new Date() },
-        { title: "Almost", fine: 2, dueDate: new Date() },
-        { title: "Last", fine: 6, dueDate: new Date() },
-      ]);
-      setLoading(false);
-    }, 500);
+    await GetFines(authToken);
+    setLoading(false);
+
+    // setTimeout(() => {
+    //   setFines([
+    //     { title: "First", fine: 10, dueDate: new Date() },
+    //     { title: "Middle", fine: 5, dueDate: new Date() },
+    //     { title: "Almost", fine: 2, dueDate: new Date() },
+    //     { title: "Last", fine: 6, dueDate: new Date() },
+    //   ]);
+    // }, 500);
   };
 
   useConstructor(() => getFineData());
@@ -55,7 +57,6 @@ function FinesPage() {
   );
 
   const payFines = async (amount) => {
-    //   TODO: Call server to pay fines off
     await PayFines(authToken, account.username);
     setFines([]);
     await getFineData();
