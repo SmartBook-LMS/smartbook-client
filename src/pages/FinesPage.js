@@ -32,7 +32,14 @@ function FinesPage() {
   const getFineData = async () => {
     setLoading(true);
     // TODO: Add actual loading code
-    await GetFines(authToken);
+    let allFines = await GetFines(authToken);
+    console.log(allFines);
+    allFines = allFines.map(({ amountDue, checkoutDate, returnDate }) => ({
+      title: `Your checkout on ${toDateStr(checkoutDate)}`,
+      fine: amountDue,
+      dueDate: returnDate,
+    }));
+    setFines(allFines);
     setLoading(false);
 
     // setTimeout(() => {
@@ -72,8 +79,8 @@ function FinesPage() {
             <Box flex={3} paddingRight={2}>
               <Typography>Fine Summary:</Typography>
               <List style={{ maxHeight: 200, overflowY: "auto" }}>
-                {fines.map((fine) => (
-                  <ListItem dense>
+                {fines.map((fine, index) => (
+                  <ListItem dense key={index}>
                     <ListItemText
                       primary={fine.title}
                       secondary={`Due date was ${toDateStr(fine.dueDate)}`}
@@ -85,6 +92,9 @@ function FinesPage() {
                     </ListItemSecondaryAction>
                   </ListItem>
                 ))}
+                {!loading && fines.length === 0 && (
+                  <Typography>No fines found</Typography>
+                )}
               </List>
               {loading && (
                 <Box

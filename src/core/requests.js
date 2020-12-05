@@ -16,10 +16,14 @@ const errors = {
   notexist: Error("Not Exsit"),
 };
 
+const convertSQLDate = (date) => {
+  date = new Date(date);
+  date.setDate(date.getDate() + 1);
+  return date;
+};
+
 export const convertSQLAccount = (sqlAccount) => {
-  const birthdate = new Date(sqlAccount.birthdate);
-  birthdate.setDate(birthdate.getDate() + 1);
-  return { ...sqlAccount, birthdate };
+  return { ...sqlAccount, birthdate: convertSQLDate(sqlAccount.birthdate) };
 };
 
 export const LoginUser = async (credentials) => {
@@ -118,7 +122,12 @@ export const GetFines = async (token) => {
       headers: tokenHeader,
     });
     const dataResponseJson = await dataResponse.json();
-    return dataResponseJson;
+    console.log(dataResponseJson)
+    return dataResponseJson.fines.map((item) => ({
+      ...item,
+      returnDate: convertSQLDate(item.returnDate),
+      checkoutDate: convertSQLDate(item.checkoutDate),
+    }));
   } catch (e) {
     throw e;
   }

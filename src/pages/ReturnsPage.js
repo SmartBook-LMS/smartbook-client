@@ -29,6 +29,7 @@ function ReturnsPage() {
   const loadItems = async () => {
     setLoading(true);
     const { checkouts } = await GetCheckouts(authToken);
+    console.log(checkouts);
     setItems(checkouts.map((item) => ({ item, selected: false })));
     setLoading(false);
   };
@@ -65,9 +66,9 @@ function ReturnsPage() {
                         setItems([...items]);
                       }}
                     />
-                    {item.mediaType === "book" && <LibraryBooksRounded />}
-                    {item.mediaType === "music" && <LibraryMusicRounded />}
-                    {item.mediaType === "movie" && <VideoLibraryRounded />}
+                    {item.mediaType === "Book" && <LibraryBooksRounded />}
+                    {item.mediaType === "Music" && <LibraryMusicRounded />}
+                    {item.mediaType === "Movie" && <VideoLibraryRounded />}
                   </Box>
                 </ListItemIcon>
                 <ListItemText primary={item.title} />
