@@ -8,6 +8,7 @@ const endpoints = {
   createMedia: "create-media/",
   fines: "fines/",
   checkouts: "checkouts/",
+  returns: "return-items/",
 };
 
 const errors = {
@@ -99,9 +100,6 @@ export const CreateMedia = async (token, mediaData) => {
       body: JSON.stringify(mediaData),
       headers: tokenHeader,
     });
-    // if (dataResponse.status === 401) {
-    //   throw errors.unauthorized;
-    // }
     const dataResponseJson = await dataResponse.json();
 
     return dataResponseJson;
@@ -149,6 +147,31 @@ export const GetCheckouts = async (token) => {
   try {
     const dataResponse = await fetch(`${baseURL}${endpoints.checkouts}`, {
       method: "GET",
+      headers: tokenHeader,
+    });
+    const dataResponseJson = await dataResponse.json();
+    return dataResponseJson;
+  } catch (e) {
+    throw e;
+  }
+};
+
+export const ReturnItems = async (token, items) => {
+  const tokenHeader = {
+    Authorization: `Token ${token}`,
+    "Content-Type": "application/json",
+  };
+
+  const returns = {
+    copies: [...new Set(items.map(({ copyID }) => copyID))],
+    checkouts: [...new Set(items.map(({ checkoutID }) => checkoutID))],
+  };
+
+  console.log(returns);
+  try {
+    const dataResponse = await fetch(`${baseURL}${endpoints.returns}`, {
+      method: "POST",
+      body: JSON.stringify(returns),
       headers: tokenHeader,
     });
     const dataResponseJson = await dataResponse.json();

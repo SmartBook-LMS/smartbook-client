@@ -19,7 +19,7 @@ import {
 import React, { useContext, useState } from "react";
 import NavBar from "../components/NavBar";
 import { AuthContext, useConstructor } from "../core/constants";
-import { GetCheckouts } from "../core/requests";
+import { GetCheckouts, ReturnItems } from "../core/requests";
 
 function ReturnsPage() {
   const [items, setItems] = useState([]);
@@ -38,9 +38,11 @@ function ReturnsPage() {
   const returnItems = async () => {
     const toReturn = items
       .filter((item) => item.selected)
-      .map(({ item }) => item);
+      .map(({ item: { copyID, checkoutID } }) => ({ copyID, checkoutID }));
     if (toReturn.length === 0) return;
     setItems([]);
+    console.log(toReturn);
+    await ReturnItems(authToken, toReturn);
     // Send items to return
     await loadItems();
   };
