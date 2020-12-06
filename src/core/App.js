@@ -13,6 +13,7 @@ import {
   SearchPage,
   SignInPage,
   SignUpPage,
+  PatronPage,
 } from "../pages";
 
 import { GetUserInfo } from "./requests";
@@ -139,6 +140,12 @@ function App() {
                 path="/SignIn"
                 component={SignInPage}
                 auth={!hasAuth}
+                redirectTo="/"
+              />
+              <GuardedRoute
+                path="/PatronPage"
+                component={PatronPage}
+                auth={hasAuth}
                 redirectTo="/"
               />
               <GuardedRoute path="/" component={HomePage} auth={hasAuth} />

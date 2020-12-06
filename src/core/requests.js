@@ -9,6 +9,7 @@ const endpoints = {
   fines: "fines/",
   checkouts: "checkouts/",
   returns: "return-items/",
+  getCustomers: "get-customers/",
 };
 
 const errors = {
@@ -192,3 +193,26 @@ export const ReturnItems = async (token, items) => {
     throw e;
   }
 };
+
+
+export const GetCustomers = async (token) => {
+  // const headers = {
+  //   Authorization: `Token ${token}`,
+  // };
+  try {
+    const dataResponse = await fetch(`${baseURL}${endpoints.getCustomers}`, {});
+    // if (dataResponse.status === 401) {
+    //   throw errors.unauthorized;
+    // }
+    const dataResponseJson = await dataResponse.json();
+    // if (dataResponseJson.status === "success") {
+    //   return convertSQLAccount(dataResponseJson.account);
+    // }
+    return dataResponseJson;
+  } catch (e) {
+    throw e;
+  }
+};
+
+
+

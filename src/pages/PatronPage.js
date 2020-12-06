@@ -1,58 +1,67 @@
 import {
-    Box,
-    Button,
-    Checkbox,
-    CircularProgress,
     Container,
-    List,
-    ListItem,
-    ListItemIcon,
-    ListItemText,
     Paper,
-    Typography,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
   } from "@material-ui/core";
-  import {
-    LibraryBooksRounded,
-    LibraryMusicRounded,
-    VideoLibraryRounded,
-  } from "@material-ui/icons";
-  import React, { useContext, useState } from "react";
+  import React, {  useState } from "react";
   import NavBar from "../components/NavBar";
-  import { AuthContext, useConstructor } from "../core/constants";
-  import { GetCheckouts } from "../core/requests";
+  import { useConstructor } from "../core/constants";
+  import { GetCustomers } from "../core/requests";
+
+  const tableFields= ["Customer Name", "Current Fines", "Toal Checkouts"];
+
   
   function PatronPage() {
-    const [items, setItems] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const { authToken } = useContext(AuthContext);
-  
+    const [customers, setCustomers] = useState([]);
+
     const loadItems = async () => {
-      setLoading(true);
-      const { checkouts } = await GetCheckouts(authToken);
-      setItems(checkouts.map((item) => ({ item, selected: false })));
-      setLoading(false);
-    };
+      let allCustomers = await GetCustomers();
+      const customerList = [];
   
-    useConstructor(loadItems);
-  
-    const returnItems = async () => {
-      const toReturn = items
-        .filter((item) => item.selected)
-        .map(({ item }) => item);
-      if (toReturn.length === 0) return;
-      setItems([]);
-      // Send items to return
-      await loadItems();
-    };
+      allCustomers.customers.map((x) => {
+        customerList.push(x);
+        return customerList;
+      })
+      setCustomers(customerList);
+    }
+    
+    useConstructor(() => loadItems());
+
+    let fields = tableFields;
   
     return (
       <>
         <NavBar />
         <Container maxWidth="md">
-          <Paper style={{ margin: 32, padding: 32 }}>
-            <Typography variant="h6">Your checkouts</Typography>
-            
-           
+          <Paper style={{ margin: 32, padding: 32 }}>            
+            <Container maxWidth="md">
+            <TableContainer style={{ margin: 15, padding: 15 }}>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    {fields.map((field) => (
+                      <TableCell key={field}>{field}</TableCell>
+                    ))}
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {customers.map((row) => (
+                    <TableRow key={row.name}>
+                      {fields.map((field) => (
+                        <TableCell scope = "row">{row[field]}</TableCell>
+                      ))}
+                    </TableRow>
+                  ))
+                  }
+                </TableBody>
+              </Table>
+            </TableContainer>
+            </Container>           
           </Paper>
         </Container>
       </>

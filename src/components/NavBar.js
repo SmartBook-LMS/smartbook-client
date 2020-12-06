@@ -154,7 +154,7 @@ function NavBar() {
     {
       icon: <PeopleRounded className={styles.drawerIcon} />,
       text: "View Patrons",
-      to: "/",
+      to: "/PatronPage",
       onClick: () => setOpen(false),
     },
     {
