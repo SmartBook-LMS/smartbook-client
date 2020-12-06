@@ -5,3 +5,4 @@ export { default as LoadingPage } from "./LoadingPage";
 export { default as SearchPage } from "./SearchPage";
 export { default as SignInPage } from "./SignInPage";
 export { default as SignUpPage } from "./SignUpPage";
+export { default as PatronPage } from "./PatronPage";
