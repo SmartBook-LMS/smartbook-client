@@ -20,6 +20,7 @@ import ManageCatalogPage from "../pages/ManageCatalogPage";
 import FinesPage from "../pages/FinesPage";
 import BagPage from "../pages/BagPage";
 import ReturnsPage from "../pages/ReturnsPage";
+import DashboardPage from "../pages/DashboardPage";
 
 function App() {
   const [authToken, setAuthToken] = useState("");
@@ -110,6 +111,11 @@ function App() {
               <GuardedRoute
                 path="/Fines"
                 component={FinesPage}
+                auth={hasAuth}
+              />
+              <GuardedRoute
+                path="/Dashboard"
+                component={DashboardPage}
                 auth={hasAuth}
               />
               <GuardedRoute
