@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import NavBar from "../components/NavBar";
-import axios from 'axios';
+import axios from "axios";
 
 import {
   Box,
@@ -24,7 +24,7 @@ import {
 } from "@material-ui/core";
 
 const data = [
-  { title: "Test", genre: " Test", description: "Test", isbn: "1233"},
+  { title: "Test", genre: " Test", description: "Test", isbn: "1233" },
   { title: "Test2", genre: " Test2", description: "Test2" },
   { title: "Test3", genre: " Test3", description: "Test3" },
 ];
@@ -47,163 +47,180 @@ function SearchPage() {
 
   const getData = async () => {
     const mediaList = [];
-    const responseBook = await axios.get('http://127.0.0.1:8000/get-books/');
-    const booklist = responseBook.data.map(x => {
-      const y = {...x, ...x.Media};
+    const responseBook = await axios.get("http://127.0.0.1:8000/get-books/");
+    const booklist = responseBook.data.map((x) => {
+      const y = { ...x, ...x.Media };
       delete y.Media;
       return y;
     });
     setBookList(booklist);
-    booklist.map(x => {
+    booklist.map((x) => {
       mediaList.push(x);
-    })
+    });
 
-    const responseMusic = await axios.get('http://127.0.0.1:8000/get-music/');
-      let musiclist = responseMusic.data.map(x => {
-        const y = {...x, ...x.Media};
-        delete y.Media;
-        return y;
-      });
-      setMusicList(musiclist);
-      musiclist.map(x => {
-        mediaList.push(x);
-      })
+    const responseMusic = await axios.get("http://127.0.0.1:8000/get-music/");
+    let musiclist = responseMusic.data.map((x) => {
+      const y = { ...x, ...x.Media };
+      delete y.Media;
+      return y;
+    });
+    setMusicList(musiclist);
+    musiclist.map((x) => {
+      mediaList.push(x);
+    });
 
-      const responseMovie = await axios.get('http://127.0.0.1:8000/get-movies/');
-      let movielist = responseMovie.data.map(x => {
-        const y = {...x, ...x.Media};
-        delete y.Media;
-        return y;
-      });
-      setMovieList(movielist);
-      movielist.map(x => {
-        mediaList.push(x);
-      })
+    const responseMovie = await axios.get("http://127.0.0.1:8000/get-movies/");
+    let movielist = responseMovie.data.map((x) => {
+      const y = { ...x, ...x.Media };
+      delete y.Media;
+      return y;
+    });
+    setMovieList(movielist);
+    movielist.map((x) => {
+      mediaList.push(x);
+    });
 
-    setSearchResults(mediaList)
-    setOrigData(mediaList);    
+    console.log(mediaList);
+
+    setSearchResults(mediaList);
+    setOrigData(mediaList);
     setListFilter(mediaList);
-  }
+  };
 
   useEffect(() => {
-    getData()
-  }, [])
-
+    getData();
+  }, []);
 
   const onSearch = async () => {
     const result = [];
-    const regex = RegExp(searchText, 'i');
+    const regex = RegExp(searchText, "i");
 
     //No Search Tag
     if (searchTags.length == 0) {
       if (searchField === "Title") {
-        listFilter.filter(obj =>
-          regex.test(obj.Title)).map(x => {
+        listFilter
+          .filter((obj) => regex.test(obj.Title))
+          .map((x) => {
             result.push(x);
-        })
+          });
       } else if (searchField === "Genre") {
-        listFilter.filter(obj =>
-          regex.test(obj.Genre)).map(x => {
+        listFilter
+          .filter((obj) => regex.test(obj.Genre))
+          .map((x) => {
             result.push(x);
-        })
-      } else if (searchField === "Description"){
-        listFilter.filter(obj =>
-          regex.test(obj.Description)).map(x => {
+          });
+      } else if (searchField === "Description") {
+        listFilter
+          .filter((obj) => regex.test(obj.Description))
+          .map((x) => {
             result.push(x);
-        })
-      } else if (searchField === "Author"){
-        listFilter.filter(obj =>
-          regex.test(obj.Author)).map(x => {
+          });
+      } else if (searchField === "Author") {
+        listFilter
+          .filter((obj) => regex.test(obj.Author))
+          .map((x) => {
             result.push(x);
-        })
-      } else if (searchField === "ISBN"){
-        listFilter.filter(obj =>
-          regex.test(obj.ISBN)).map(x => {
+          });
+      } else if (searchField === "ISBN") {
+        listFilter
+          .filter((obj) => regex.test(obj.ISBN))
+          .map((x) => {
             result.push(x);
-        })
-      } else if (searchField === "Director"){
-        listFilter.filter(obj =>
-          regex.test(obj.Director)).map(x => {
+          });
+      } else if (searchField === "Director") {
+        listFilter
+          .filter((obj) => regex.test(obj.Director))
+          .map((x) => {
             result.push(x);
-        })
-      } else if (searchField === "Rating"){
-        listFilter.filter(obj =>
-          regex.test(obj.Rating)).map(x => {
+          });
+      } else if (searchField === "Rating") {
+        listFilter
+          .filter((obj) => regex.test(obj.Rating))
+          .map((x) => {
             result.push(x);
-        })
-      } else if (searchField === "Artist"){
-        listFilter.filter(obj =>
-          regex.test(obj.Artist)).map(x => {
+          });
+      } else if (searchField === "Artist") {
+        listFilter
+          .filter((obj) => regex.test(obj.Artist))
+          .map((x) => {
             result.push(x);
-        })
+          });
       }
-      setSearchResults(result);  
+      setSearchResults(result);
     }
-    //Search Tag exists 
+    //Search Tag exists
     else {
       const filterResult = [];
-      listFilter.map(x => {
+      listFilter.map((x) => {
         filterResult.push(x);
-      })
+      });
       for (let i = 0; i < searchTags.length; i++) {
-        const regex = RegExp(searchTags[i].value, 'i');
+        const regex = RegExp(searchTags[i].value, "i");
         const field = searchTags[i].searchField;
         const result = [];
-  
+
         if (field === "Title") {
-          filterResult.filter(obj =>
-            regex.test(obj.Title)).map(x => {
+          filterResult
+            .filter((obj) => regex.test(obj.Title))
+            .map((x) => {
               result.push(x);
               //return result;
-          })
+            });
         } else if (field === "Genre") {
-          filterResult.filter(obj =>
-            regex.test(obj.Genre)).map(x => {
+          filterResult
+            .filter((obj) => regex.test(obj.Genre))
+            .map((x) => {
               result.push(x);
               //return result;
-          })
-        } else if (field === "Description"){
-          filterResult.filter(obj =>
-            regex.test(obj.Description)).map(x => {
+            });
+        } else if (field === "Description") {
+          filterResult
+            .filter((obj) => regex.test(obj.Description))
+            .map((x) => {
               result.push(x);
               //return result;
-          })
-        } else if (field === "Author"){
-          filterResult.filter(obj =>
-            regex.test(obj.Author)).map(x => {
+            });
+        } else if (field === "Author") {
+          filterResult
+            .filter((obj) => regex.test(obj.Author))
+            .map((x) => {
               result.push(x);
               //return result;
-          })
-        } else if (field === "ISBN"){
-          filterResult.filter(obj =>
-            regex.test(obj.ISBN)).map(x => {
+            });
+        } else if (field === "ISBN") {
+          filterResult
+            .filter((obj) => regex.test(obj.ISBN))
+            .map((x) => {
               result.push(x);
               return result;
-          })
-        } else if (field === "Director"){
-          filterResult.filter(obj =>
-            regex.test(obj.Director)).map(x => {
+            });
+        } else if (field === "Director") {
+          filterResult
+            .filter((obj) => regex.test(obj.Director))
+            .map((x) => {
               result.push(x);
               return result;
-          })
-        } else if (field === "Rating"){
-          filterResult.filter(obj =>
-            regex.test(obj.Rating)).map(x => {
+            });
+        } else if (field === "Rating") {
+          filterResult
+            .filter((obj) => regex.test(obj.Rating))
+            .map((x) => {
               result.push(x);
               return result;
-          })
-        } else if (field === "Artist"){
-          filterResult.filter(obj =>
-            regex.test(obj.Artist)).map(x => {
+            });
+        } else if (field === "Artist") {
+          filterResult
+            .filter((obj) => regex.test(obj.Artist))
+            .map((x) => {
               result.push(x);
               return result;
-          })
+            });
         }
         filterResult.splice(0, filterResult.length);
-        result.map(x => {
+        result.map((x) => {
           filterResult.push(x);
-        })
-        setSearchResults(filterResult);  
+        });
+        setSearchResults(filterResult);
       }
     }
     setListFilter(origData);
@@ -227,10 +244,10 @@ function SearchPage() {
 
   const [mediaType, setMediaType] = useState("all");
   const onSelectMediaType = ({ target: { value } }) => {
-     if (value === "book") {
-       setSearchResults(bookList);
-       setListFilter(bookList);
-     } else if (value === "movie") {
+    if (value === "book") {
+      setSearchResults(bookList);
+      setListFilter(bookList);
+    } else if (value === "movie") {
       setSearchResults(movieList);
       setListFilter(movieList);
     } else if (value === "music") {
@@ -355,9 +372,7 @@ function SearchPage() {
               {searchResults.map((row) => (
                 <TableRow key={row.name}>
                   {fields.map((field) => (
-                    <TableCell scope="row">
-                      {row[field]}{" "}
-                    </TableCell>
+                    <TableCell scope="row">{row[field]} </TableCell>
                   ))}
                 </TableRow>
               ))}

@@ -8,6 +8,7 @@ const endpoints = {
   createMedia: "create-media/",
   fines: "fines/",
   checkouts: "checkouts/",
+  returns: "return-items/",
 };
 
 const errors = {
@@ -15,10 +16,14 @@ const errors = {
   notexist: Error("Not Exsit"),
 };
 
+const convertSQLDate = (date) => {
+  date = new Date(date);
+  date.setDate(date.getDate() + 1);
+  return date;
+};
+
 export const convertSQLAccount = (sqlAccount) => {
-  const birthdate = new Date(sqlAccount.birthdate);
-  birthdate.setDate(birthdate.getDate() + 1);
-  return { ...sqlAccount, birthdate };
+  return { ...sqlAccount, birthdate: convertSQLDate(sqlAccount.birthdate) };
 };
 
 export const LoginUser = async (credentials) => {
@@ -99,12 +104,29 @@ export const CreateMedia = async (token, mediaData) => {
       body: JSON.stringify(mediaData),
       headers: tokenHeader,
     });
-    // if (dataResponse.status === 401) {
-    //   throw errors.unauthorized;
-    // }
     const dataResponseJson = await dataResponse.json();
 
     return dataResponseJson;
+  } catch (e) {
+    throw e;
+  }
+};
+
+export const GetFines = async (token) => {
+  const tokenHeader = {
+    Authorization: `Token ${token}`,
+  };
+  try {
+    const dataResponse = await fetch(`${baseURL}${endpoints.fines}`, {
+      method: "GET",
+      headers: tokenHeader,
+    });
+    const dataResponseJson = await dataResponse.json();
+    return dataResponseJson.fines.map((item) => ({
+      ...item,
+      returnDate: convertSQLDate(item.returnDate),
+      checkoutDate: convertSQLDate(item.checkoutDate),
+    }));
   } catch (e) {
     throw e;
   }
@@ -133,6 +155,35 @@ export const GetCheckouts = async (token) => {
   try {
     const dataResponse = await fetch(`${baseURL}${endpoints.checkouts}`, {
       method: "GET",
+      headers: tokenHeader,
+    });
+    const dataResponseJson = await dataResponse.json();
+    dataResponseJson.checkouts = dataResponseJson.checkouts.map((item) => ({
+      ...item,
+      returnDate: convertSQLDate(item.returnDate),
+    }));
+    return dataResponseJson;
+  } catch (e) {
+    throw e;
+  }
+};
+
+export const ReturnItems = async (token, items) => {
+  const tokenHeader = {
+    Authorization: `Token ${token}`,
+    "Content-Type": "application/json",
+  };
+
+  const returns = {
+    copies: [...new Set(items.map(({ copyID }) => copyID))],
+    checkouts: [...new Set(items.map(({ checkoutID }) => checkoutID))],
+  };
+
+  console.log(returns);
+  try {
+    const dataResponse = await fetch(`${baseURL}${endpoints.returns}`, {
+      method: "POST",
+      body: JSON.stringify(returns),
       headers: tokenHeader,
     });
     const dataResponseJson = await dataResponse.json();

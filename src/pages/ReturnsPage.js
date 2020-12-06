@@ -7,6 +7,7 @@ import {
   List,
   ListItem,
   ListItemIcon,
+  ListItemSecondaryAction,
   ListItemText,
   Paper,
   Typography,
@@ -19,7 +20,11 @@ import {
 import React, { useContext, useState } from "react";
 import NavBar from "../components/NavBar";
 import { AuthContext, useConstructor } from "../core/constants";
-import { GetCheckouts } from "../core/requests";
+import { GetCheckouts, ReturnItems } from "../core/requests";
+
+function toDateStr(date) {
+  return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+}
 
 function ReturnsPage() {
   const [items, setItems] = useState([]);
@@ -38,12 +43,14 @@ function ReturnsPage() {
   const returnItems = async () => {
     const toReturn = items
       .filter((item) => item.selected)
-      .map(({ item }) => item);
+      .map(({ item: { copyID, checkoutID } }) => ({ copyID, checkoutID }));
     if (toReturn.length === 0) return;
     setItems([]);
+    await ReturnItems(authToken, toReturn);
     // Send items to return
     await loadItems();
   };
+  const currentDate = new Date();
 
   return (
     <>
@@ -63,12 +70,17 @@ function ReturnsPage() {
                         setItems([...items]);
                       }}
                     />
-                    {item.mediaType === "book" && <LibraryBooksRounded />}
-                    {item.mediaType === "music" && <LibraryMusicRounded />}
-                    {item.mediaType === "movie" && <VideoLibraryRounded />}
+                    {item.mediaType === "Book" && <LibraryBooksRounded />}
+                    {item.mediaType === "Music" && <LibraryMusicRounded />}
+                    {item.mediaType === "Movie" && <VideoLibraryRounded />}
                   </Box>
                 </ListItemIcon>
                 <ListItemText primary={item.title} />
+                <ListItemSecondaryAction>
+                  <Typography color={item.returnDate < currentDate ? "error" : "textSecondary"}>
+                    Due on {toDateStr(item.returnDate)}
+                  </Typography>
+                </ListItemSecondaryAction>
               </ListItem>
             ))}
             {items.length === 0 && !loading && (
