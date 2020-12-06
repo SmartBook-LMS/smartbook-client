@@ -26,6 +26,7 @@ import {
   LibraryBooksRounded,
   LocalMallRounded,
   PeopleRounded,
+  PieChartRounded,
   PostAddRounded,
   SearchRounded,
 } from "@material-ui/icons";
@@ -39,8 +40,8 @@ const useStyles = makeStyles((theme) => ({
   navBarLinks: {
     display: "flex",
     flexGrow: 1,
-    color: "pink",
-    justifyContent: "space-around",
+    justifyContent: "flex-start",
+    alignItems: "center",
   },
   drawerHeader: {
     color: "white",
@@ -115,6 +116,15 @@ function NavBar() {
       onClick: () => setOpen(false),
     },
     {
+      icon: <AccountCircleRoundedIcon className={styles.drawerIcon} />,
+      text: "My Account",
+      to: "/Account",
+      onClick: () => setOpen(false),
+    },
+  ];
+
+  const customerDrawerItems = [
+    {
       icon: <SearchRounded className={styles.drawerIcon} />,
       text: "Browse",
       to: "/Search",
@@ -132,15 +142,15 @@ function NavBar() {
       to: "/Fines",
       onClick: () => setOpen(false),
     },
-    {
-      icon: <AccountCircleRoundedIcon className={styles.drawerIcon} />,
-      text: "My Account",
-      to: "/Account",
-      onClick: () => setOpen(false),
-    },
   ];
 
   const librarianDrawerItems = [
+    {
+      icon: <PostAddRounded className={styles.drawerIcon} />,
+      text: "Manage Catalog",
+      to: "/ManageCatalog",
+      onClick: () => setOpen(false),
+    },
     {
       icon: <PeopleRounded className={styles.drawerIcon} />,
       text: "View Patrons",
@@ -148,15 +158,17 @@ function NavBar() {
       onClick: () => setOpen(false),
     },
     {
-      icon: <PostAddRounded className={styles.drawerIcon} />,
-      text: "Manage Catalog",
-      to: "/ManageCatalog",
+      icon: <PieChartRounded className={styles.drawerIcon} />,
+      text: "Dashboard",
+      to: "/Dashboard",
       onClick: () => setOpen(false),
     },
   ];
 
   if (account.librarian) {
     drawerItems = [...drawerItems, ...librarianDrawerItems];
+  } else {
+    drawerItems = [...drawerItems, ...customerDrawerItems];
   }
   const history = useHistory();
   const { numItems } = useContext(BagContext);
@@ -165,9 +177,13 @@ function NavBar() {
       <AppBar position="static">
         <Toolbar>
           <Box className={styles.navBarLinks}>
-            <NabBarLink to="/" text="Home" />
+            <IconButton onClick={() => history.push("/Home")} color="default">
+              <HomeRounded />
+            </IconButton>
+            <Typography variant="h6">SmartBook</Typography>
+            {/* <NabBarLink to="/" text="Home" />
             <NabBarLink to="/Checkouts" text="Checkouts" />
-            <NabBarLink to="/Account" text="Account" />
+            <NabBarLink to="/Account" text="Account" /> */}
           </Box>
           <IconButton onClick={() => history.push("/Returns")} color="default">
             <AssignmentReturnRounded />
