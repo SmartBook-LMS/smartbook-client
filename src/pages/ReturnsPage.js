@@ -34,7 +34,6 @@ function ReturnsPage() {
   const loadItems = async () => {
     setLoading(true);
     const { checkouts } = await GetCheckouts(authToken);
-    console.log(checkouts);
     setItems(checkouts.map((item) => ({ item, selected: false })));
     setLoading(false);
   };
@@ -47,11 +46,11 @@ function ReturnsPage() {
       .map(({ item: { copyID, checkoutID } }) => ({ copyID, checkoutID }));
     if (toReturn.length === 0) return;
     setItems([]);
-    console.log(toReturn);
     await ReturnItems(authToken, toReturn);
     // Send items to return
     await loadItems();
   };
+  const currentDate = new Date();
 
   return (
     <>
@@ -78,7 +77,7 @@ function ReturnsPage() {
                 </ListItemIcon>
                 <ListItemText primary={item.title} />
                 <ListItemSecondaryAction>
-                  <Typography color="error">
+                  <Typography color={item.returnDate < currentDate ? "error" : "textSecondary"}>
                     Due on {toDateStr(item.returnDate)}
                   </Typography>
                 </ListItemSecondaryAction>

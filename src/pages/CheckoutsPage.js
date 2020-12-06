@@ -1,136 +1,74 @@
-import React from "react";
-import { Grid, Paper, Typography, Box } from "@material-ui/core";
+import React, { useContext, useState } from "react";
+import { Grid, Paper, Typography, Box, Container } from "@material-ui/core";
 import NavBar from "../components/NavBar";
-import { makeStyles } from "@material-ui/core/styles";
+import { GetCheckouts } from "../core/requests";
+import { AuthContext, useConstructor } from "../core/constants";
+
+function toDateStr(date) {
+  return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+}
+
+function getDaysDifference(startDate, endDate) {
+  const timeDiff = Math.abs(endDate.getTime() - startDate.getTime());
+
+  // days difference
+  const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+  return diffDays;
+}
 
 function CheckoutsPage() {
-  const useStyles = makeStyles((theme) => ({
-    cardRoot: {
-      width: 200,
-      height: 200,
-      margin: 30,
-    },
-    bullet: {
-      display: "inline-block",
-      margin: "0 2px",
-      transform: "scale(0.8)",
-    },
-    title: {
-      fontSize: 14,
-    },
-    pos: {
-      marginBottom: 12,
-    },
+  const [checkouts, setCheckouts] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const { authToken } = useContext(AuthContext);
 
-    root: {
-      flexGrow: 1,
-      margin: 70,
-    },
-    paper: {
-      padding: theme.spacing(2),
-      textAlign: "center",
-      color: theme.palette.text.secondary,
-    },
-  }));
+  const loadCheckouts = async () => {
+    setLoading(true);
+    const { checkouts } = await GetCheckouts(authToken);
+    setCheckouts(checkouts);
+    setLoading(false);
+  };
 
-  const classes = useStyles();
+  useConstructor(loadCheckouts);
+  const currentDate = new Date();
+  const renderCheckout = (checkout) => {
+    console.log(checkout);
+    return (
+      <Grid item xs={6} key={checkout.copyID}>
+        <Paper>
+          <Box p={2}>
+            <Box display="flex" justifyContent="space-between">
+              <Typography variant="h6">{checkout.title}</Typography>
+              <Typography>Due on {toDateStr(checkout.returnDate)}</Typography>
+            </Box>
+            <Box display="flex" justifyContent="flex-end">
+              {checkout.returnDate.getTime() < currentDate.getTime() ? (
+                <Typography color="error">{`Overdue ${getDaysDifference(
+                  checkout.returnDate,
+                  currentDate
+                )} days`}</Typography>
+              ) : (
+                <Typography color="textSecondary">{`Due in ${getDaysDifference(
+                  checkout.returnDate,
+                  currentDate
+                )} days`}</Typography>
+              )}
+            </Box>
+          </Box>
+        </Paper>
+      </Grid>
+    );
+  };
+
   return (
-    <Box height={1000} style={{background: 'linear-gradient(#6EBFF3, #95E0F1, #A1EAF0, #D8F2F5, #E8F2F8)'}}> 
-    <NavBar />
-      <div className={classes.root}>
-        <Grid container spacing={10}>
-          <Grid item xs={6}>
-            <Paper className={classes.paper}>
-              <Grid container spacing={2}>
-                <Grid item xs={6}>
-                  <Typography inline variant="h6" align="left">
-                    Title_1
-                  </Typography>
-                </Grid>
-                <Grid item xs={6}>
-                  <Typography inline variant="body1" align="right">
-                    Due Oct 25, 2020
-                  </Typography>
-                </Grid>
-                <Grid item xs={6}>
-                  <Typography inline variant="body1" align="left">
-                    Author_1
-                  </Typography>
-                </Grid>
-                <Grid item xs={6}>
-                  <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                      <Typography
-                        inline
-                        variant="subtitle2"
-                        align="right"
-                        style={{ color: "red" }}
-                      >
-                        Overdue: 0 days
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <Typography
-                        inline
-                        variant="subtitle2"
-                        align="right"
-                        style={{ color: "red" }}
-                      >
-                        Fine:$0.00
-                      </Typography>
-                    </Grid>
-                  </Grid>
-                </Grid>
-              </Grid>
-            </Paper>
+    <Box>
+      <NavBar />
+      <Container maxWidth="lg">
+        <Box margin={4}>
+          <Grid container spacing={4}>
+            {checkouts.map((checkout) => renderCheckout(checkout))}
           </Grid>
-          <Grid item xs={6}>
-            <Paper className={classes.paper}>
-              <Grid container spacing={2}>
-                <Grid item xs={6}>
-                  <Typography inline variant="h6" align="left">
-                    Title_2
-                  </Typography>
-                </Grid>
-                <Grid item xs={6}>
-                  <Typography inline variant="body1" align="right">
-                    Due Oct 28, 2020
-                  </Typography>
-                </Grid>
-                <Grid item xs={6}>
-                  <Typography inline variant="body1" align="left">
-                    Author_2
-                  </Typography>
-                </Grid>
-                <Grid item xs={6}>
-                  <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                      <Typography
-                        inline
-                        variant="subtitle2"
-                        align="right"
-                        style={{ color: "red" }}
-                      >
-                        Overdue: 3 days
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <Typography
-                        inline
-                        variant="subtitle2"
-                        align="right"
-                        style={{ color: "red" }}
-                      >
-                        Fine:$0.75
-                      </Typography>
-                    </Grid>
-                  </Grid>
-                </Grid>
-              </Grid>
-            </Paper>
-          </Grid>
-        </Grid>
-      </div>
+        </Box>
+      </Container>
     </Box>
   );
 }
