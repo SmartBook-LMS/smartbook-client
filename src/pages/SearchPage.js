@@ -56,6 +56,7 @@ function SearchPage() {
     setBookList(booklist);
     booklist.map((x) => {
       mediaList.push(x);
+      return mediaList;
     });
 
     const responseMusic = await axios.get("http://127.0.0.1:8000/get-music/");
@@ -67,6 +68,7 @@ function SearchPage() {
     setMusicList(musiclist);
     musiclist.map((x) => {
       mediaList.push(x);
+      return mediaList;
     });
 
     const responseMovie = await axios.get("http://127.0.0.1:8000/get-movies/");
@@ -78,13 +80,27 @@ function SearchPage() {
     setMovieList(movielist);
     movielist.map((x) => {
       mediaList.push(x);
+      return mediaList;
     });
 
-    console.log(mediaList);
+    const checkouts = []
 
-    setSearchResults(mediaList);
-    setOrigData(mediaList);
-    setListFilter(mediaList);
+    const getCheckouts = await axios.get("http://127.0.0.1:8000/get-checkoutList/");
+    getCheckouts.data.checkoutList.map((x) => {
+      checkouts.push(x.mediaID[0]);
+      return checkouts;
+    })
+
+    const finalCheckouts = [];
+    mediaList.map((x) => {
+      if (!checkouts.includes(x.ID)) {
+        finalCheckouts.push(x);
+      }
+    })
+
+    setSearchResults(finalCheckouts);
+    setOrigData(finalCheckouts);
+    setListFilter(finalCheckouts);
   };
 
   useEffect(() => {
@@ -102,48 +118,56 @@ function SearchPage() {
           .filter((obj) => regex.test(obj.Title))
           .map((x) => {
             result.push(x);
+            return result;
           });
       } else if (searchField === "Genre") {
         listFilter
           .filter((obj) => regex.test(obj.Genre))
           .map((x) => {
             result.push(x);
+            return result;
           });
       } else if (searchField === "Description") {
         listFilter
           .filter((obj) => regex.test(obj.Description))
           .map((x) => {
             result.push(x);
+            return result;
           });
       } else if (searchField === "Author") {
         listFilter
           .filter((obj) => regex.test(obj.Author))
           .map((x) => {
             result.push(x);
+            return result;
           });
       } else if (searchField === "ISBN") {
         listFilter
           .filter((obj) => regex.test(obj.ISBN))
           .map((x) => {
             result.push(x);
+            return result;
           });
       } else if (searchField === "Director") {
         listFilter
           .filter((obj) => regex.test(obj.Director))
           .map((x) => {
             result.push(x);
+            return result;
           });
       } else if (searchField === "Rating") {
         listFilter
           .filter((obj) => regex.test(obj.Rating))
           .map((x) => {
             result.push(x);
+            return result;
           });
       } else if (searchField === "Artist") {
         listFilter
           .filter((obj) => regex.test(obj.Artist))
           .map((x) => {
             result.push(x);
+            return result;
           });
       }
       setSearchResults(result);
@@ -153,6 +177,7 @@ function SearchPage() {
       const filterResult = [];
       listFilter.map((x) => {
         filterResult.push(x);
+        return filterResult;
       });
       for (let i = 0; i < searchTags.length; i++) {
         const regex = RegExp(searchTags[i].value, "i");
@@ -164,28 +189,28 @@ function SearchPage() {
             .filter((obj) => regex.test(obj.Title))
             .map((x) => {
               result.push(x);
-              //return result;
+              return result;
             });
         } else if (field === "Genre") {
           filterResult
             .filter((obj) => regex.test(obj.Genre))
             .map((x) => {
               result.push(x);
-              //return result;
+              return result;
             });
         } else if (field === "Description") {
           filterResult
             .filter((obj) => regex.test(obj.Description))
             .map((x) => {
               result.push(x);
-              //return result;
+              return result;
             });
         } else if (field === "Author") {
           filterResult
             .filter((obj) => regex.test(obj.Author))
             .map((x) => {
               result.push(x);
-              //return result;
+              return result;
             });
         } else if (field === "ISBN") {
           filterResult
@@ -219,6 +244,7 @@ function SearchPage() {
         filterResult.splice(0, filterResult.length);
         result.map((x) => {
           filterResult.push(x);
+          return filterResult;
         });
         setSearchResults(filterResult);
       }

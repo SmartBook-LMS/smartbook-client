@@ -10,6 +10,7 @@ const endpoints = {
   checkouts: "checkouts/",
   returns: "return-items/",
   getCustomers: "get-customers/",
+  getCheckouts: "get-checkoutList/"
 };
 
 const errors = {
