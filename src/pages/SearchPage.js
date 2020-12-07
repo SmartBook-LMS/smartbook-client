@@ -83,20 +83,22 @@ function SearchPage() {
       return mediaList;
     });
 
-    const checkouts = []
+    const checkouts = [];
 
-    const getCheckouts = await axios.get("http://127.0.0.1:8000/get-checkoutList/");
+    const getCheckouts = await axios.get(
+      "http://127.0.0.1:8000/get-checkoutList/"
+    );
     getCheckouts.data.checkoutList.map((x) => {
       checkouts.push(x.mediaID[0]);
       return checkouts;
-    })
+    });
 
     const finalCheckouts = [];
-    mediaList.map((x) => {
+    mediaList.forEach((x) => {
       if (!checkouts.includes(x.ID)) {
         finalCheckouts.push(x);
       }
-    })
+    });
 
     setSearchResults(finalCheckouts);
     setOrigData(finalCheckouts);
@@ -112,7 +114,7 @@ function SearchPage() {
     const regex = RegExp(searchText, "i");
 
     //No Search Tag
-    if (searchTags.length == 0) {
+    if (searchTags.length === 0) {
       if (searchField === "Title") {
         listFilter
           .filter((obj) => regex.test(obj.Title))

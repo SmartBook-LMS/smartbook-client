@@ -10,7 +10,8 @@ const endpoints = {
   checkouts: "checkouts/",
   returns: "return-items/",
   getCustomers: "get-customers/",
-  getCheckouts: "get-checkoutList/"
+  getCheckouts: "get-checkoutList/",
+  dashboard: "dashboard/",
 };
 
 const errors = {
@@ -195,7 +196,6 @@ export const ReturnItems = async (token, items) => {
   }
 };
 
-
 export const GetCustomers = async (token) => {
   // const headers = {
   //   Authorization: `Token ${token}`,
@@ -215,5 +215,27 @@ export const GetCustomers = async (token) => {
   }
 };
 
-
-
+export const GetDashboard = async (token) => {
+  const headers = {
+    Authorization: `Token ${token}`,
+  };
+  try {
+    const dataResponse = await fetch(`${baseURL}${endpoints.dashboard}`, {
+      method: "GET",
+      headers: headers,
+    });
+    const dataResponseJson = await dataResponse.json();
+    dataResponseJson.info.recentReturns = dataResponseJson.info.recentReturns.map(
+      (item) => ({ ...item, returnDate: convertSQLDate(item.returnDate) })
+    );
+    dataResponseJson.info.recentCheckouts = dataResponseJson.info.recentCheckouts.map(
+      (item) => ({ ...item, checkoutDate: convertSQLDate(item.checkoutDate) })
+    );
+    // if (dataResponseJson.status === "success") {
+    //   return convertSQLAccount(dataResponseJson.account);
+    // }
+    return dataResponseJson;
+  } catch (e) {
+    throw e;
+  }
+};

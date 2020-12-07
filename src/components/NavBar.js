@@ -72,13 +72,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function NabBarLink({ text, to }) {
-  return (
-    <Link to={to} style={{ textDecoration: "none" }}>
-      <Button style={{ color: "white" }}>{text}</Button>
-    </Link>
-  );
-}
+// function NabBarLink({ text, to }) {
+//   return (
+//     <Link to={to} style={{ textDecoration: "none" }}>
+//       <Button style={{ color: "white" }}>{text}</Button>
+//     </Link>
+//   );
+// }
 
 function DrawerItem({ icon, text, to, onClick }) {
   const styles = useStyles();
@@ -185,14 +185,24 @@ function NavBar() {
             <NabBarLink to="/Checkouts" text="Checkouts" />
             <NabBarLink to="/Account" text="Account" /> */}
           </Box>
-          <IconButton onClick={() => history.push("/Returns")} color="default">
-            <AssignmentReturnRounded />
-          </IconButton>
-          <IconButton onClick={() => history.push("/MyBag")} color="default">
-            <Badge badgeContent={numItems} color="secondary">
-              <LocalMallRounded />
-            </Badge>
-          </IconButton>
+          {!account.librarian && (
+            <>
+              <IconButton
+                onClick={() => history.push("/Returns")}
+                color="default"
+              >
+                <AssignmentReturnRounded />
+              </IconButton>
+              <IconButton
+                onClick={() => history.push("/MyBag")}
+                color="default"
+              >
+                <Badge badgeContent={numItems} color="secondary">
+                  <LocalMallRounded />
+                </Badge>
+              </IconButton>
+            </>
+          )}
           <IconButton edge="end" onClick={() => setOpen(true)} color="default">
             <MenuIcon />
           </IconButton>
