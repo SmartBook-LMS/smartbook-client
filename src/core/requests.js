@@ -132,6 +132,7 @@ export const GetMusic = async (tags) => {
     throw e;
   }
 };
+
 export const GetMovies = async (tags) => {
   const headers = {
     // Authorization: `Token ${token}`,
@@ -149,6 +150,7 @@ export const GetMovies = async (tags) => {
     throw e;
   }
 };
+
 export const CreateMedia = async (token, mediaData) => {
   const tokenHeader = {
     Authorization: `Token ${token}`,
@@ -223,7 +225,24 @@ export const GetCheckouts = async (token) => {
     throw e;
   }
 };
+export const PostCheckouts = async (token, media) => {
+  const tokenHeader = {
+    Authorization: `Token ${token}`,
+    "Content-Type": "application/json",
+  };
+  try {
+    const dataResponse = await fetch(`${baseURL}${endpoints.checkouts}`, {
+      method: "POST",
+      body: JSON.stringify({ media }),
+      headers: tokenHeader,
+    });
+    const dataResponseJson = await dataResponse.json();
 
+    return dataResponseJson;
+  } catch (e) {
+    throw e;
+  }
+};
 export const ReturnItems = async (token, items) => {
   const tokenHeader = {
     Authorization: `Token ${token}`,

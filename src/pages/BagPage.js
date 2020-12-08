@@ -18,13 +18,19 @@ import {
 } from "@material-ui/icons";
 import React, { useContext } from "react";
 import NavBar from "../components/NavBar";
-import { BagContext } from "../core/constants";
+import { AuthContext, BagContext } from "../core/constants";
+import { PostCheckouts } from "../core/requests";
 
 function BagPage() {
-  const { checkouts, removeItem } = useContext(BagContext);
+  const { checkouts, removeItem, clearBag } = useContext(BagContext);
+  const { authToken } = useContext(AuthContext);
 
-  const checkoutItems = () => {
+  const checkoutItems = async () => {
     if (checkouts.length === 0) return;
+    const items = checkouts.map((item) => item.ID);
+    console.log(items);
+    await PostCheckouts(authToken, items);
+    clearBag();
   };
 
   return (
