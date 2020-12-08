@@ -4,13 +4,16 @@ const endpoints = {
   userInfo: "user-info/",
   loginUser: "login-user/",
   createUser: "create-user/",
-  getBook: "get-books/",
+  book: "get-books/",
+  music: "get-music/",
+  movie: "get-movies/",
   createMedia: "create-media/",
   fines: "fines/",
   checkouts: "checkouts/",
   returns: "return-items/",
   getCustomers: "get-customers/",
-  getCheckouts: "get-checkoutList/"
+  getCheckouts: "get-checkoutList/",
+  dashboard: "dashboard/",
 };
 
 const errors = {
@@ -95,6 +98,59 @@ export const GetBookInfo = async (token) => {
   }
 };
 
+export const GetBooks = async (tags) => {
+  const headers = {
+    // Authorization: `Token ${token}`,
+    "Content-Type": "application/json",
+  };
+  try {
+    const dataResponse = await fetch(`${baseURL}${endpoints.book}`, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(tags),
+    });
+    const dataResponseJson = await dataResponse.json();
+    return dataResponseJson;
+  } catch (e) {
+    throw e;
+  }
+};
+export const GetMusic = async (tags) => {
+  const headers = {
+    // Authorization: `Token ${token}`,
+    "Content-Type": "application/json",
+  };
+  try {
+    const dataResponse = await fetch(`${baseURL}${endpoints.music}`, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(tags),
+    });
+    const dataResponseJson = await dataResponse.json();
+    return dataResponseJson;
+  } catch (e) {
+    throw e;
+  }
+};
+
+export const GetMovies = async (tags) => {
+  const headers = {
+    // Authorization: `Token ${token}`,
+    "Content-Type": "application/json",
+  };
+  try {
+    const dataResponse = await fetch(`${baseURL}${endpoints.movie}`, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(tags),
+    });
+    const dataResponseJson = await dataResponse.json();
+    return dataResponseJson;
+  } catch (e) {
+    throw e;
+  }
+};
+
 export const CreateMedia = async (token, mediaData) => {
   const tokenHeader = {
     Authorization: `Token ${token}`,
@@ -169,7 +225,24 @@ export const GetCheckouts = async (token) => {
     throw e;
   }
 };
+export const PostCheckouts = async (token, media) => {
+  const tokenHeader = {
+    Authorization: `Token ${token}`,
+    "Content-Type": "application/json",
+  };
+  try {
+    const dataResponse = await fetch(`${baseURL}${endpoints.checkouts}`, {
+      method: "POST",
+      body: JSON.stringify({ media }),
+      headers: tokenHeader,
+    });
+    const dataResponseJson = await dataResponse.json();
 
+    return dataResponseJson;
+  } catch (e) {
+    throw e;
+  }
+};
 export const ReturnItems = async (token, items) => {
   const tokenHeader = {
     Authorization: `Token ${token}`,
@@ -195,7 +268,6 @@ export const ReturnItems = async (token, items) => {
   }
 };
 
-
 export const GetCustomers = async (token) => {
   // const headers = {
   //   Authorization: `Token ${token}`,
@@ -215,5 +287,27 @@ export const GetCustomers = async (token) => {
   }
 };
 
-
-
+export const GetDashboard = async (token) => {
+  const headers = {
+    Authorization: `Token ${token}`,
+  };
+  try {
+    const dataResponse = await fetch(`${baseURL}${endpoints.dashboard}`, {
+      method: "GET",
+      headers: headers,
+    });
+    const dataResponseJson = await dataResponse.json();
+    dataResponseJson.info.recentReturns = dataResponseJson.info.recentReturns.map(
+      (item) => ({ ...item, returnDate: convertSQLDate(item.returnDate) })
+    );
+    dataResponseJson.info.recentCheckouts = dataResponseJson.info.recentCheckouts.map(
+      (item) => ({ ...item, checkoutDate: convertSQLDate(item.checkoutDate) })
+    );
+    // if (dataResponseJson.status === "success") {
+    //   return convertSQLAccount(dataResponseJson.account);
+    // }
+    return dataResponseJson;
+  } catch (e) {
+    throw e;
+  }
+};

@@ -26,11 +26,7 @@ import DashboardPage from "../pages/DashboardPage";
 function App() {
   const [authToken, setAuthToken] = useState("");
   const [account, setAccount] = useState({});
-  const [checkouts, setCheckouts] = useState([
-    { mediaType: "book", title: "Test", copyID: 1 },
-    { mediaType: "movie", title: "Test2", copyID: 2 },
-    { mediaType: "music", title: "Test3", copyID: 3 },
-  ]);
+  const [checkouts, setCheckouts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useConstructor(async () => {
@@ -68,7 +64,7 @@ function App() {
     numItems: checkouts.length,
     clearBag: () => setCheckouts([]),
     addItem: (item) =>
-      checkouts.includes(item) ? setCheckouts([...checkouts, item]) : null,
+      !checkouts.includes(item) ? setCheckouts([...checkouts, item]) : null,
     removeItem: (item) => {
       const index = checkouts.findIndex(
         (media) => media.copyID === item.copyID

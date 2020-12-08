@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import NavBar from "../components/NavBar";
-import axios from "axios";
 
 import {
   Box,
@@ -22,12 +21,14 @@ import {
   TextField,
   Typography,
 } from "@material-ui/core";
+import { GetBooks, GetMovies, GetMusic } from "../core/requests";
+import { BagContext, useConstructor } from "../core/constants";
 
-const data = [
-  { title: "Test", genre: " Test", description: "Test", isbn: "1233" },
-  { title: "Test2", genre: " Test2", description: "Test2" },
-  { title: "Test3", genre: " Test3", description: "Test3" },
-];
+// const data = [
+//   { title: "Test", genre: " Test", description: "Test", isbn: "1233" },
+//   { title: "Test2", genre: " Test2", description: "Test2" },
+//   { title: "Test3", genre: " Test3", description: "Test3" },
+// ];
 
 const mediaFields = ["Title", "Genre", "Description"];
 
@@ -38,220 +39,9 @@ const movieFields = ["Director", "Rating"];
 const musicFields = ["Artist"];
 
 function SearchPage() {
-  const [searchResults, setSearchResults] = useState(data);
-  const [origData, setOrigData] = useState([]);
-  const [listFilter, setListFilter] = useState([]);
-  const [bookList, setBookList] = useState([]);
-  const [movieList, setMovieList] = useState([]);
-  const [musicList, setMusicList] = useState([]);
+  const { addItem } = useContext(BagContext);
 
-  const getData = async () => {
-    const mediaList = [];
-    const responseBook = await axios.get("http://127.0.0.1:8000/get-books/");
-    const booklist = responseBook.data.map((x) => {
-      const y = { ...x, ...x.Media };
-      delete y.Media;
-      return y;
-    });
-    setBookList(booklist);
-    booklist.map((x) => {
-      mediaList.push(x);
-      return mediaList;
-    });
-
-    const responseMusic = await axios.get("http://127.0.0.1:8000/get-music/");
-    let musiclist = responseMusic.data.map((x) => {
-      const y = { ...x, ...x.Media };
-      delete y.Media;
-      return y;
-    });
-    setMusicList(musiclist);
-    musiclist.map((x) => {
-      mediaList.push(x);
-      return mediaList;
-    });
-
-    const responseMovie = await axios.get("http://127.0.0.1:8000/get-movies/");
-    let movielist = responseMovie.data.map((x) => {
-      const y = { ...x, ...x.Media };
-      delete y.Media;
-      return y;
-    });
-    setMovieList(movielist);
-    movielist.map((x) => {
-      mediaList.push(x);
-      return mediaList;
-    });
-
-    const checkouts = []
-
-    const getCheckouts = await axios.get("http://127.0.0.1:8000/get-checkoutList/");
-    getCheckouts.data.checkoutList.map((x) => {
-      checkouts.push(x.mediaID[0]);
-      return checkouts;
-    })
-
-    const finalCheckouts = [];
-    mediaList.map((x) => {
-      if (!checkouts.includes(x.ID)) {
-        finalCheckouts.push(x);
-      }
-    })
-
-    setSearchResults(finalCheckouts);
-    setOrigData(finalCheckouts);
-    setListFilter(finalCheckouts);
-  };
-
-  useEffect(() => {
-    getData();
-  }, []);
-
-  const onSearch = async () => {
-    const result = [];
-    const regex = RegExp(searchText, "i");
-
-    //No Search Tag
-    if (searchTags.length == 0) {
-      if (searchField === "Title") {
-        listFilter
-          .filter((obj) => regex.test(obj.Title))
-          .map((x) => {
-            result.push(x);
-            return result;
-          });
-      } else if (searchField === "Genre") {
-        listFilter
-          .filter((obj) => regex.test(obj.Genre))
-          .map((x) => {
-            result.push(x);
-            return result;
-          });
-      } else if (searchField === "Description") {
-        listFilter
-          .filter((obj) => regex.test(obj.Description))
-          .map((x) => {
-            result.push(x);
-            return result;
-          });
-      } else if (searchField === "Author") {
-        listFilter
-          .filter((obj) => regex.test(obj.Author))
-          .map((x) => {
-            result.push(x);
-            return result;
-          });
-      } else if (searchField === "ISBN") {
-        listFilter
-          .filter((obj) => regex.test(obj.ISBN))
-          .map((x) => {
-            result.push(x);
-            return result;
-          });
-      } else if (searchField === "Director") {
-        listFilter
-          .filter((obj) => regex.test(obj.Director))
-          .map((x) => {
-            result.push(x);
-            return result;
-          });
-      } else if (searchField === "Rating") {
-        listFilter
-          .filter((obj) => regex.test(obj.Rating))
-          .map((x) => {
-            result.push(x);
-            return result;
-          });
-      } else if (searchField === "Artist") {
-        listFilter
-          .filter((obj) => regex.test(obj.Artist))
-          .map((x) => {
-            result.push(x);
-            return result;
-          });
-      }
-      setSearchResults(result);
-    }
-    //Search Tag exists
-    else {
-      const filterResult = [];
-      listFilter.map((x) => {
-        filterResult.push(x);
-        return filterResult;
-      });
-      for (let i = 0; i < searchTags.length; i++) {
-        const regex = RegExp(searchTags[i].value, "i");
-        const field = searchTags[i].searchField;
-        const result = [];
-
-        if (field === "Title") {
-          filterResult
-            .filter((obj) => regex.test(obj.Title))
-            .map((x) => {
-              result.push(x);
-              return result;
-            });
-        } else if (field === "Genre") {
-          filterResult
-            .filter((obj) => regex.test(obj.Genre))
-            .map((x) => {
-              result.push(x);
-              return result;
-            });
-        } else if (field === "Description") {
-          filterResult
-            .filter((obj) => regex.test(obj.Description))
-            .map((x) => {
-              result.push(x);
-              return result;
-            });
-        } else if (field === "Author") {
-          filterResult
-            .filter((obj) => regex.test(obj.Author))
-            .map((x) => {
-              result.push(x);
-              return result;
-            });
-        } else if (field === "ISBN") {
-          filterResult
-            .filter((obj) => regex.test(obj.ISBN))
-            .map((x) => {
-              result.push(x);
-              return result;
-            });
-        } else if (field === "Director") {
-          filterResult
-            .filter((obj) => regex.test(obj.Director))
-            .map((x) => {
-              result.push(x);
-              return result;
-            });
-        } else if (field === "Rating") {
-          filterResult
-            .filter((obj) => regex.test(obj.Rating))
-            .map((x) => {
-              result.push(x);
-              return result;
-            });
-        } else if (field === "Artist") {
-          filterResult
-            .filter((obj) => regex.test(obj.Artist))
-            .map((x) => {
-              result.push(x);
-              return result;
-            });
-        }
-        filterResult.splice(0, filterResult.length);
-        result.map((x) => {
-          filterResult.push(x);
-          return filterResult;
-        });
-        setSearchResults(filterResult);
-      }
-    }
-    setListFilter(origData);
-  };
-
+  const [searchResults, setSearchResults] = useState([]);
   const [searchTags, setSearchTags] = useState([]);
   const [searchField, setSearchField] = useState("Title");
   const [searchText, setSearchText] = useState("");
@@ -270,24 +60,77 @@ function SearchPage() {
 
   const [mediaType, setMediaType] = useState("all");
   const onSelectMediaType = ({ target: { value } }) => {
-    if (value === "book") {
-      setSearchResults(bookList);
-      setListFilter(bookList);
-    } else if (value === "movie") {
-      setSearchResults(movieList);
-      setListFilter(movieList);
-    } else if (value === "music") {
-      setSearchResults(musicList);
-      setListFilter(musicList);
-    } else {
-      setSearchResults(origData);
-      setListFilter(origData);
-    }
     setMediaType(value);
     setSearchField("Title");
     setSearchText("");
     setSearchTags([]);
   };
+
+  const onSearchMedia = async () => {
+    const tags = {};
+    searchTags.forEach(
+      (item) => (tags[item.searchField.toLowerCase()] = item.value)
+    );
+
+    if (mediaType === "book") {
+      const books = (await GetBooks(tags)).map((item) => ({
+        ...item,
+        ...item.Media,
+      }));
+      setSearchResults(books);
+    } else if (mediaType === "music") {
+      const music = (await GetMusic(tags)).map((item) => ({
+        ...item,
+        ...item.Media,
+      }));
+      setSearchResults(music);
+    } else if (mediaType === "movie") {
+      const movies = (await GetMovies(tags)).map((item) => ({
+        ...item,
+        ...item.Media,
+      }));
+      setSearchResults(movies);
+    } else {
+      const books = (await GetBooks(tags)).map((item) => ({
+        ...item,
+        ...item.Media,
+      }));
+
+      const music = (await GetMusic(tags)).map((item) => ({
+        ...item,
+        ...item.Media,
+      }));
+
+      const movies = (await GetMovies(tags)).map((item) => ({
+        ...item,
+        ...item.Media,
+      }));
+
+      const mediaList = [...books, ...music, ...movies];
+      setSearchResults(mediaList);
+    }
+  };
+
+  useConstructor(async () => {
+    const books = (await GetBooks()).map((item) => ({
+      ...item,
+      ...item.Media,
+    }));
+
+    const music = (await GetMusic()).map((item) => ({
+      ...item,
+      ...item.Media,
+    }));
+
+    const movies = (await GetMovies()).map((item) => ({
+      ...item,
+      ...item.Media,
+    }));
+
+    const media = [...books, ...music, ...movies];
+
+    setSearchResults(media);
+  });
 
   let fields = mediaFields;
   if (mediaType === "book") fields = [...fields, ...bookFields];
@@ -376,7 +219,7 @@ function SearchPage() {
               fullWidth
               variant="contained"
               color="primary"
-              onClick={onSearch}
+              onClick={onSearchMedia}
             >
               Search Media
             </Button>
@@ -384,31 +227,38 @@ function SearchPage() {
         </Paper>
       </Container>
       <Container maxWidth="md">
-        <TableContainer component={Paper} style={{ margin: 32, padding: 32 }}>
+        <TableContainer component={Paper} style={{ margin: 0, padding: 32 }}>
           <Typography variant="h6">Search Results</Typography>
           <Table>
             <TableHead>
               <TableRow>
+                {mediaType === "all" && <TableCell>Type</TableCell>}
                 {fields.map((field) => (
                   <TableCell key={field}>{field}</TableCell>
                 ))}
+                <TableCell></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {searchResults.map((row) => (
-                <TableRow key={row.name}>
+                <TableRow key={row.ID}>
+                  {mediaType === "all" && (
+                    <TableCell>{row.Media_Type}</TableCell>
+                  )}
                   {fields.map((field) => (
-                    <TableCell scope="row">{row[field]} </TableCell>
+                    <TableCell key={field} scope="row">
+                      {row[field]}
+                    </TableCell>
                   ))}
+                  <TableCell>
+                    <Button onClick={() => addItem(row)}>ADD</Button>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
         </TableContainer>
       </Container>
-      {/* <MuiThemeProvider theme={myTheme}>
-        <MUIDataTable data={data} columns={columns} options={options} />
-      </MuiThemeProvider> */}
     </div>
   );
 }

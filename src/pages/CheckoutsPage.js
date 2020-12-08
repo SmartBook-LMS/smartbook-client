@@ -18,7 +18,7 @@ function getDaysDifference(startDate, endDate) {
 
 function CheckoutsPage() {
   const [checkouts, setCheckouts] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [, setLoading] = useState(false);
   const { authToken } = useContext(AuthContext);
 
   const loadCheckouts = async () => {
@@ -31,7 +31,6 @@ function CheckoutsPage() {
   useConstructor(loadCheckouts);
   const currentDate = new Date();
   const renderCheckout = (checkout) => {
-    console.log(checkout);
     return (
       <Grid item xs={6} key={checkout.copyID}>
         <Paper>
