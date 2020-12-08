@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import NavBar from "../components/NavBar";
-import axios from "axios";
 
 import {
   Box,
