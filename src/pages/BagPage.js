@@ -35,13 +35,13 @@ function BagPage() {
           <Typography variant="h6">Your bag</Typography>
           <List style={{ maxHeight: 500, overflowY: "auto" }}>
             {checkouts.map((item) => (
-              <ListItem>
+              <ListItem key={item.ID}>
                 <ListItemIcon>
-                  {item.mediaType === "book" && <LibraryBooksRounded />}
-                  {item.mediaType === "music" && <LibraryMusicRounded />}
-                  {item.mediaType === "movie" && <VideoLibraryRounded />}
+                  {item.Media_Type === "Book" && <LibraryBooksRounded />}
+                  {item.Media_Type === "Music" && <LibraryMusicRounded />}
+                  {item.Media_Type === "Movie" && <VideoLibraryRounded />}
                 </ListItemIcon>
-                <ListItemText primary={item.title} />
+                <ListItemText primary={item.Title} />
                 <ListItemSecondaryAction>
                   <IconButton onClick={() => removeItem(item)}>
                     <Close />
@@ -50,7 +50,7 @@ function BagPage() {
               </ListItem>
             ))}
             {checkouts.length === 0 && (
-              <Typography variant="body">No items in bag</Typography>
+              <Typography variant="body1">No items in bag</Typography>
             )}
           </List>
           <Button

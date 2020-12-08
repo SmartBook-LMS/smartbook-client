@@ -4,7 +4,9 @@ const endpoints = {
   userInfo: "user-info/",
   loginUser: "login-user/",
   createUser: "create-user/",
-  getBook: "get-books/",
+  book: "get-books/",
+  music: "get-music/",
+  movie: "get-movies/",
   createMedia: "create-media/",
   fines: "fines/",
   checkouts: "checkouts/",
@@ -96,6 +98,57 @@ export const GetBookInfo = async (token) => {
   }
 };
 
+export const GetBooks = async (tags) => {
+  const headers = {
+    // Authorization: `Token ${token}`,
+    "Content-Type": "application/json",
+  };
+  try {
+    const dataResponse = await fetch(`${baseURL}${endpoints.book}`, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(tags),
+    });
+    const dataResponseJson = await dataResponse.json();
+    return dataResponseJson;
+  } catch (e) {
+    throw e;
+  }
+};
+export const GetMusic = async (tags) => {
+  const headers = {
+    // Authorization: `Token ${token}`,
+    "Content-Type": "application/json",
+  };
+  try {
+    const dataResponse = await fetch(`${baseURL}${endpoints.music}`, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(tags),
+    });
+    const dataResponseJson = await dataResponse.json();
+    return dataResponseJson;
+  } catch (e) {
+    throw e;
+  }
+};
+export const GetMovies = async (tags) => {
+  const headers = {
+    // Authorization: `Token ${token}`,
+    "Content-Type": "application/json",
+  };
+  try {
+    const dataResponse = await fetch(`${baseURL}${endpoints.movie}`, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(tags),
+    });
+    const dataResponseJson = await dataResponse.json();
+    return dataResponseJson;
+  } catch (e) {
+    throw e;
+  }
+};
 export const CreateMedia = async (token, mediaData) => {
   const tokenHeader = {
     Authorization: `Token ${token}`,
